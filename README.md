@@ -10,7 +10,9 @@ The working group is formed by:
 
 The project is inspired by: https://www.youtube.com/watch?v=N68S9l9z9i8
 
-The descriptions of the elements used, together with their connection and description can be found at: (insert link)
+The descriptions of the elements used, together with their connection and description can be found at: 
+* [Spanish version](https://github.com/eromerol/Smart-Cube-ESP8266/blob/main/Spanish%20Version/Montaje.md)
+* [English version](https://github.com/eromerol/Smart-Cube-ESP8266/blob/main/English%20Version/Assembly.md)
 
 The process of programming and commissioning of the cube can be found at: (insert link)
 
