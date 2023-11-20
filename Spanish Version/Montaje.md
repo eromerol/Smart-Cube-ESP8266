@@ -44,7 +44,10 @@ El MPU-6050 puede medir la aceleración y la velocidad angular en tres ejes: x, 
 
 El esquema de conexión de este dispositivo con la placa ESP8266, junto con el pinout del componente, se puede ver en las siguientes imágenes:
 
-![image](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/46695a02-ad73-451e-aa2e-697742e766d3)
+<p align="center">
+<img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/46695a02-ad73-451e-aa2e-697742e766d3" width=600 height=300>
+
+
 
 ![conexion_esp8266_mpu6050](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/9ef484c0-5d0d-419f-b800-3151b1fdcd97)
 
@@ -61,7 +64,8 @@ No se necesitan librerías específicas para el ESP8266, ya que sólo utiliza el
 
 El diagrama de conexión de este dispositivo con la placa ESP8266, junto con el pinout del componente, se puede ver en las siguientes imágenes:
 
-![image](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/22e217f5-1d83-432e-b3ff-43aa797a11b2)
+<p align="center">
+<img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/22e217f5-1d83-432e-b3ff-43aa797a11b2" width=600 height=300>
 
 ![conexion_esp8266_sw420](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/842322b1-bf7d-4206-b93c-53274cbb4ba2)
 
