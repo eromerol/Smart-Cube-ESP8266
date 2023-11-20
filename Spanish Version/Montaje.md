@@ -37,9 +37,41 @@ Nuestra versión hecha a mano se encargará de las mismas caraterísticas, y en 
 
 DESCRIPCIÓN DEL HARDWARE
 ==============================
-* MPU6050
+### MPU6050
 El MPU-6050 es un sensor de movimiento de 6 ejes que combina un acelerómetro de 3 ejes y un giroscopio de 3 ejes en un solo chip. Es una opción popular para diversas aplicaciones, como robótica, drones y realidad virtual.
 
 El MPU-6050 puede medir la aceleración y la velocidad angular en tres ejes: x, y y z. Estos datos se van a utilizar para seguir el movimiento de un objeto, como la posición, orientación o rotación de nuestro cubo mágico.
 
-Info vía: http://www.sinaptec.alomar.com.ar/2017/10/tutorial-23-esp8266-obtener-inclinacion.html
+El esquema de conexión de este dispositivo con la placa ESP8266, junto con el pinout del componente, se puede ver en las siguientes imágenes:
+
+![image](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/46695a02-ad73-451e-aa2e-697742e766d3)
+
+![conexion_esp8266_mpu6050](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/9ef484c0-5d0d-419f-b800-3151b1fdcd97)
+
+Info vía: [Link1](http://www.sinaptec.alomar.com.ar/2017/10/tutorial-23-esp8266-obtener-inclinacion.html)
+          [Link2](https://randomnerdtutorials.com/esp8266-nodemcu-mpu-6050-accelerometer-gyroscope-arduino/)
+
+### SW-420
+
+El SW-420 es un sensor que detecta vibraciones a partir de un umbral que puedes ajustar con el potenciómetro incluido. El módulo se basa en el sensor SW-420 y un comparador LM393 que produce una señal TTL cuando se activa.
+
+El sensor de vibración de movimiento SW-420 es un sensor sencillo que utiliza un único pin de datos para detectar el movimiento. Además, el potenciómetro integrado proporciona una forma sencilla de ajustar el nivel de movimiento necesario para activar el pin digital.
+
+No se necesitan librerías específicas para el ESP8266, ya que sólo utiliza el pin digital. Sin embargo, es importante asegurarse de conectar el pin VCC a la línea de 3,3 voltios. Esto se debe a que este es el voltaje máximo aceptado por los pines digitales.
+
+El diagrama de conexión de este dispositivo con la placa ESP8266, junto con el pinout del componente, se puede ver en las siguientes imágenes:
+
+![image](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/22e217f5-1d83-432e-b3ff-43aa797a11b2)
+
+![conexion_esp8266_sw420](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/842322b1-bf7d-4206-b93c-53274cbb4ba2)
+
+Info vía: [Link1](https://chewett.co.uk/blog/1849/using-the-sw-420-motion-vibration-sensor-with-a-wemos-d1-mini-esp8266/)
+
+
+### ESQUEMÁTICO
+
+El esquemático completo, incluyendo los dos componentes descritos anteriormente junto con la placa sería el siguiente:
+
+![conexion_esp8266_mpu6050_sw420](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/79b4f48f-de9e-4f82-8185-d8d1e5434b47)
+
+Esta imagen, al igual que los esquemáticos anteriores, está realizada con la aplicación fritzing. Los archivos de los componentes se encuentran en la siguiente carpeta: [Fritzing](https://github.com/eromerol/Smart-Cube-ESP8266/tree/main/Fritzing)
