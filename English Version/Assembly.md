@@ -76,4 +76,4 @@ The complete schematic design, including both components described above togethe
 
 ![conexion_esp8266_mpu6050_sw420](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/3d7beb1b-dcb0-45f7-9d3a-9f52a9a9f4a0)
 
-This image, like the previous schematics, is made with the fritzing application. The component files can be found in the following folder:
+This image, like the previous schematics, is made with the fritzing application. The component files can be found in the following folder: [Fritzing](https://github.com/eromerol/Smart-Cube-ESP8266/tree/main/Fritzing)
