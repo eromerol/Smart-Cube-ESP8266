@@ -32,3 +32,14 @@ Our handmade version will take care of the same features and in this document we
 *   [PubSubClient](https://www.arduinolibraries.info/libraries/pub-sub-client)
 *   [Wire](https://github.com/espressif/arduino-esp32/tree/master/libraries/Wire)
 *   [WiFi](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
+
+
+
+COMPONENTS DESCRIPTION
+==============================
+* MPU6050
+The MPU-6050 is a 6-axis motion sensor that combines a 3-axis accelerometer and a 3-axis gyroscope in a single chip. It is a popular choice for a variety of applications, including robotics, drones, and virtual reality.
+
+The MPU-6050 can measure acceleration and angular velocity in three axes: x, y, and z. This data is going to be used to track the movement of an object, such as the position, orientation, or rotation of our magic cube.
+
+Info via: http://www.sinaptec.alomar.com.ar/2017/10/tutorial-23-esp8266-obtener-inclinacion.html
