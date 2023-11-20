@@ -8,6 +8,8 @@ The working group is formed by:
 - Romero Luque, Elisabeth María
 - Serra González, Bartomeu
 
+The project is inspired by: https://www.youtube.com/watch?v=N68S9l9z9i8
+
 The descriptions of the elements used, together with their connection and description can be found at: (insert link)
 
 The process of programming and commissioning of the cube can be found at: (insert link)
