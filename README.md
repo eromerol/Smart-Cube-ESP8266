@@ -9,6 +9,7 @@ The working group is formed by:
 - Serra González, Bartomeu
 
 The project is inspired by: https://www.youtube.com/watch?v=N68S9l9z9i8
+                            https://naylampmechatronics.com/blog/45_tutorial-mpu6050-acelerometro-y-giroscopio.html
 
 The descriptions of the elements used, together with their connection and description can be found at: 
 * [Spanish version](https://github.com/eromerol/Smart-Cube-ESP8266/blob/main/Spanish%20Version/Montaje.md)
