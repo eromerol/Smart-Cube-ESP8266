@@ -28,7 +28,7 @@ Nuestra versión hecha a mano se encargará de las mismas caraterísticas, y en 
 📚LIBRERÍAS
 ==========
 *   [Adafruit_MPU6050](https://github.com/adafruit/Adafruit_MPU6050)
-*   [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor)
+*   [MPU6050](https://github.com/jrowberg/i2cdevlib/tree/master/Arduino/MPU6050)
 *   [PubSubClient](https://www.arduinolibraries.info/libraries/pub-sub-client)
 *   [Wire](https://github.com/espressif/arduino-esp32/tree/master/libraries/Wire)
 *   [WiFi](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
