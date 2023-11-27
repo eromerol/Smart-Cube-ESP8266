@@ -21,12 +21,12 @@ Una vez dentro del bucle principal, obtenemos las lecturas de la rotación y de 
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/e42afc8c-7d1c-4a4a-98b6-fa321014cadc" width=400 heigt=100>
 
-Y se le asignan a las variables:
+Y se le asignan a las variables creadas previamente:
 
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/5c9f5e09-9cc1-4ab5-80ac-49605efde076" width=400 heigt=100>
 
-**NOTA:** Si vamos al [repositorio de la biblioteca MPU6050](https://github.com/ElectronicCats/mpu6050), encontramos la deifinición de los procedimientos en la carpeta MPU6050.cpp:
+**NOTA:** Si vamos al [repositorio de la biblioteca MPU6050](https://github.com/ElectronicCats/mpu6050), dentro de 'src' encontramos la deifinición de los procedimientos en la carpeta MPU6050.cpp:
 
 - **getRotation**
 <p align="center">
@@ -36,7 +36,7 @@ Y se le asignan a las variables:
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/ed7cf806-35cc-458a-8d7d-382aebef0202" width=600 heigt=500>
 
-Donde se lee que las lecturas están en formato complemento a 2, por lo que después se les hace la conversión al sistema internacional: *EXPLICAR MAS*
+Donde se lee que las lecturas son de tipo entero de 16 bits y están en formato complemento a 2, por lo que después se les hace la conversión al sistema internacional: *EXPLICAR MAS*
 
 - Rotación:
 <p align="center">
