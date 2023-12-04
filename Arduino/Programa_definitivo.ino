@@ -8,6 +8,9 @@
 MPU6050 mpu;
 
 int Vibration_signal = 16;
+int led = 2;
+const uint8_t scl = D1;
+const uint8_t sda = D2;
 
 int16_t ax, ay, az; // Valores del acelerometro
 int16_t gx, gy, gz; // Valores del giroscopio
@@ -17,13 +20,16 @@ long tiempo_prev, dt;
 float girosc_ang_x, girosc_ang_y, girosc_ang_z;
 float girosc_ang_x_prev, girosc_ang_y_prev, girosc_ang_z_prev;
 
+float umbral_giro_x = 50.0; // Umbral para detección de giro en el eje X
+
 void setup(void) {
   Serial.begin(115200);
+  pinMode(led, OUTPUT);
 
   // Try to initialize!
-  mpu.initialize(); 
-  Wire.begin();
-
+  mpu.initialize();
+  Wire.begin(sda,scl);
+    
   if (mpu.testConnection()) Serial.println("Sensor iniciado correctamente");
   else Serial.println("Error al iniciar el sensor");
   
@@ -36,6 +42,7 @@ void setup(void) {
   delay(100);
 
   tiempo_prev=millis();
+  Serial.println("Fin setup");
 }
 
 void loop() {
@@ -85,14 +92,31 @@ void loop() {
   girosc_ang_y_prev=girosc_ang_y;
   girosc_ang_z_prev=girosc_ang_z;
 
+  float girz = fmod(girosc_ang_z,float(360));
+
   //Mostrar los angulos separadas por un [tab]
   Serial.print("\nRotacion en X:  ");
   Serial.print(girosc_ang_x); 
   Serial.print("\nRotacion en Y: ");
   Serial.println(girosc_ang_y);
-  Serial.print("\nRotacion en Z: ");
-  Serial.println(girosc_ang_z);
+  Serial.print("\nRotacion en mod: ");
+  Serial.println(girz);
+  int brillo = map(abs(girz), 360, 0, 0, 1024);
+  analogWrite(led, brillo);
 
+  // Si la rotación en el eje X supera el umbral establecido
+  if (abs(accel_ang_x) >= umbral_giro_x) {
+    Serial.println("¡Giro en el eje X detectado!");
+    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+  }
+    if (abs(accel_ang_y) >= umbral_giro_x) {
+    Serial.println("¡Giro en el eje Y detectado!");
+    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+  }
+    if (abs(accel_ang_z) >= umbral_giro_x) {
+    Serial.println("¡Giro en el eje Z detectado!");
+    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+  }
 
   Serial.print("\nVibration status: ");
   bool Sensor_State = digitalRead(Vibration_signal);
@@ -105,6 +129,6 @@ void loop() {
     delay(1000);
   }
 
-  delay(2000);
+  delay(1000);
   
 }
