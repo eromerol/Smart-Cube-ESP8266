@@ -10,7 +10,7 @@
   - GUARDAR TODAS LAS CANCIONES EN UNA COLECCIÓN DE MONGO DB
   - Recibir en Telegram la canción actualmente reproducida y dar la opción de guardarla
 
-## Alexa (mostrando junto al dashboard) ->
+## Alexa (mostrando junto al dashboard) 
   - Giro en Y positivo subir un grado la temperatura (Tenemos un termostato)
   - Giro en Y negativo bajar un grado la temperatura (Tenemos un termostato)
   - GUARDAR TODAS TEMPERATURA, HUMEDAD Y PRESIÓN EN UNA COLECCIÓN DE MONGO DB
