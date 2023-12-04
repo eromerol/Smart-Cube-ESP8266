@@ -1,7 +1,8 @@
 # Ideas para controlar
 
 -Spotify -> 
-  Giro en el eje X a la iquierda SkipToPrevious
+  Giro en el eje X a la iquierda SkipToPrevious.
+  
   Giro en el eje X a la derecha SkipToNext
   Entrada desde telegram para guardar canción AddToMySaveTracks
   play una pulsación del botón
