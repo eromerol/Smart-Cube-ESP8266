@@ -1,14 +1,14 @@
 # Ideas para controlar
 
--Spotify -> 
-  Giro en el eje X a la iquierda SkipToPrevious
-  Giro en el eje X a la derecha SkipToNext
-  Entrada desde telegram para guardar canción AddToMySaveTracks
-  play una pulsación del botón
-  pause dos pulsaciones del botón
-  (Si el botón se mantiene presionado es para mover el cubo)
-  GUARDAR TODAS LAS CANCIONES EN UNA COLECCIÓN DE MONGO DB
-  Recibir en Telegram la canción actualmente reproducida y dar la opción de guardarla
+##Spotify -> 
+  -Giro en el eje X a la iquierda SkipToPrevious
+  -Giro en el eje X a la derecha SkipToNext
+  -Entrada desde telegram para guardar canción AddToMySaveTracks
+  -play una pulsación del botón
+  -pause dos pulsaciones del botón
+  -(Si el botón se mantiene presionado es para mover el cubo)
+  -GUARDAR TODAS LAS CANCIONES EN UNA COLECCIÓN DE MONGO DB
+  -Recibir en Telegram la canción actualmente reproducida y dar la opción de guardarla
 
 -Alexa (mostrando junto al dashboard) ->
   Giro en Y positivo subir un grado la temperatura (Tenemos un termostato)
