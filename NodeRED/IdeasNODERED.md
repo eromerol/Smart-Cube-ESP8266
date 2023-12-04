@@ -15,12 +15,14 @@
   - Giro en Y negativo bajar un grado la temperatura (Tenemos un termostato)
   - GUARDAR TODAS TEMPERATURA, HUMEDAD Y PRESIÓN EN UNA COLECCIÓN DE MONGO DB
   - Recibir en Telegram si la temperatura y tal la cambiamos
+
   
-  - Giro en Z positivo encender la lámpara 
+  - Giro en Z positivo aumnetar intensidad de la lámpara (4 tramos)
   - Giro en Z negativo apagar la lámpara 
   - Mostrar el estado de la lámpara en el dashboard
   - GUARDAR EL ESTADO DE LA LÁMPARA EN UNA COLECCIÓN DE MONGO DB
   - Recibir en Telegram si cambiamos la lámpara
+
 
   - Push hacia delante cambiar al siguiente canal de la tele
   - Push hacia atrás cambiar al anterior canal de la tele
