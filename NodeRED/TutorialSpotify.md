@@ -30,3 +30,6 @@ Una vez añadido todo esto se presiona Authentification y nos redirige a la URI 
 Al aceptar, spotify nos ha autorizado y nos debe de aparecer un mensaje como el siguiente y habríamos termiando de configurar el nodo (dependiendo del API que seleccionemos alomejor nos pide más información, pero en los APIs de este proyecto no es necesario)
 ![image](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/2221cea5-756b-4c94-939f-40c9e8a0a6ab)
 
+## Bibliografía
+[Repositorio GitHub creador del nodo Spotify](https://github.com/pckhib/node-red-contrib-spotify)
+[Documentación Spotify Web API](https://developer.spotify.com/documentation/web-api/tutorials/getting-started)
