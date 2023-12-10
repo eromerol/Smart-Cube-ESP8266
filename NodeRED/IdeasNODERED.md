@@ -17,7 +17,7 @@
   - Recibir en Telegram si la temperatura y tal la cambiamos
 
   
-  - Giro en Z positivo aumnetar intensidad de la lámpara (4 tramos)
+  - Giro en Z positivo aumentar intensidad de la lámpara (4 tramos)
   - Giro en Z negativo apagar la lámpara 
   - Mostrar el estado de la lámpara en el dashboard
   - GUARDAR EL ESTADO DE LA LÁMPARA EN UNA COLECCIÓN DE MONGO DB
