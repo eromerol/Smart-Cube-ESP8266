@@ -1,133 +1,152 @@
-// Basic demo for accelerometer readings from Adafruit MPU6050
-
 #include <Wire.h>
-#include <MPU6050.h>
-#include <I2Cdev.h>
-#include <string>
-#include <ESP8266WiFi.h>
-#include <PubSubClient.h>
-#include "DHTesp.h"
+#include <MPU6050.h> //Biblioteca sensor
+#include <I2Cdev.h>  //Biblioteca comunicacion I2C
+#include "Button2.h" //Biblioteca pulsaciones
+#include <ArduinoJson.h> //Biblioteca JSON
+#include <PubSubClient.h> //Biblioteca MQTT
+#include <ESP8266WiFi.h> // Biblioteca WIFI ESP8266
 
-// Dispositivos
+/////////////////////////////////////////////////////////////////
+
+#define BUTTON_PIN  12
+#define MPU 0x68
+
+/////////////////////////////////////////////////////////////////
+Button2 button;
 MPU6050 mpu;
-DHTesp dht;
 
-// Cliente MQTT
-WiFiClient wClient;
-PubSubClient mqtt_client(wClient);
-const String mqtt_server = "iot.ac.uma.es";
-const String mqtt_user = "infind";
-const String mqtt_pass = "zancudo";
-const String ssid = "María's Galaxy A13";
-const String password = "mariaguapa";
+// Inicializamos el cliente WiFi
+WiFiClient espClient;
+PubSubClient mqtt_client(espClient);
+/////////////////////////////////////////////////////////////////
 
-int Vibration_signal = 16;
+// Definimos pines generales
+int pinled = 13;
 int led = 2;
-const uint8_t scl = D1;
-const uint8_t sda = D2;
+int Vibration_signal = 14;
 
-int16_t ax, ay, az; // Valores del acelerometro
-int16_t gx, gy, gz; // Valores del giroscopio
-int16_t temperatura;
+
+// Declaramos variables
+int brillo = 0;
+float temperatura;
+bool estado_stop=false;
+bool estado_play=false;
+bool skiptoprevious=false;
+bool skiptonext=false;
+float temperatura;
+int termostato=0;
+
+// Definimos datos de la red WiFi
+// const String ssid = "dlink-AE58";
+// const String password = "ceyza33866";
+ const String ssid = "infind";
+ const String password = "1518wifi";
+
+// Definimos el servidor MQTT
+const String mqttServer = "iot.ac.uma.es";
+const String mqttUser = "infind";
+const String mqttPassword = "zancudo";
+
+// Definimos String
+String ID_PLACA;
+String topic_conexion;
+String topic_Spotify;
+String topic_Alexa;
+
+// Variables del acelerometro
+int16_t ax, ay, az; 
+
+// Variables del giroscopio
+int16_t gx, gy, gz;
+int16_t temp_raw;
 
 long tiempo_prev, dt;
 float girosc_ang_x, girosc_ang_y, girosc_ang_z;
 float girosc_ang_x_prev, girosc_ang_y_prev, girosc_ang_z_prev;
 
-float umbral_giro_x = 50.0; // Umbral para detección de giro en el eje X
-
-String ID_PLACA, topic_pub, topic_sub;
-
-//---------------------- WiFi -------------------------------
+float umbral = 50.0; // Umbral para detección de giro
+//-------------------------------------------------------
+//                     CONECTA WIFI
+//-------------------------------------------------------
 void conecta_wifi() {
-  Serial.println("Connecting to " + ssid);
+  Serial.println("Conectando a " + ssid);
  
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
-  Serial.print("ssid:"+ssid);
-  Serial.print("pw:"+password);
-
   while (WiFi.status() != WL_CONNECTED) {
     delay(200);
-    Serial.print(".  ");
-    Serial.print("ssid:"+ssid);
-    Serial.print("pw:"+password);
+    Serial.print(".");
   }
   Serial.println();
-  Serial.println("WiFi connected, IP address: " + WiFi.localIP().toString());
+  Serial.println("WiFi conectado, direccion IP: " + WiFi.localIP().toString());
 }
 
-//---------------------- MQTT -------------------------------
+//-------------------------------------------------------
+//                     CONECTA MQTT
+//-------------------------------------------------------
 void conecta_mqtt() {
-  // Loop until we're reconnected
+  // Bucle hasta que estemos reconectados
+
   while (!mqtt_client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
-    if (mqtt_client.connect(ID_PLACA.c_str(), mqtt_user.c_str(), mqtt_pass.c_str())) {
-      Serial.println(" conectado a broker: " + mqtt_server);
+    Serial.println("Conectando al servidor MQTT...");
+
+    // Intentamos conectarnos
+    if (mqtt_client.connect("ESP8266Client", mqttUser.c_str(), mqttPassword.c_str(), topic_conexion.c_str(), 1, true, "\"online\": false")) {
+      Serial.println("Conectado a: " + mqttServer);
+
+      // Enviamos mensaje de conexión al topic topic_conexion.c_str
+      mqtt_client.publish(topic_conexion.c_str(), "\"online\": true", true); // Mensaje retenido
+
     } else {
-      Serial.println("ERROR:"+ String(mqtt_client.state()) +" reintento en 5s" );
-      // Wait 5 seconds before retrying
+       Serial.println("ERROR:"+ String(mqtt_client.state()) +" reintento en 5s" );
+
+      // Esperamos 2 segundos antes de volver a intentarlo
       delay(5000);
     }
   }
 }
-
-// -------------------- MENSAJE MQTT ---------------------
-void procesa_mensaje(char* topic, byte* payload, unsigned int length) { 
-  //String mensaje=String(std::string((char*) payload,length).c_str());
-  //Serial.println("Mensaje recibido ["+ String(topic) +"] "+ mensaje);
-
-  char *mensaje=(char *)malloc(length+1); // reservo memoria para copia del mensaje
-  strncpy(mensaje,(char*)payload,length); // copio el mensaje en cadena de caracteres
-  mensaje[length]='\0';
-
-  // compruebo el topic
-  if(String(topic)==topic_sub) 
-  {
-    if (mensaje[0] == '1') {
-        digitalWrite(led, LOW);   // Turn the LED on (Note that LOW is the voltage level 
-      } else {
-        digitalWrite(led, HIGH);  // Turn the LED off by making the voltage HIGH
-      }
-  }
-  else
-  {
-    Serial.println("Error: Topic desconocido");
-  }
-  
-  free(mensaje); // libero memoria
-}
-
-//---------------------- SET UP -------------------------
-void setup(void) 
-{
+//-------------------------------------------------------
+//                      SETUP
+//-------------------------------------------------------
+void setup(void) {
   Serial.begin(115200);
-  pinMode(led, OUTPUT);
 
-  // Try to initialize!
+  Wire.begin();
+  Wire.beginTransmission(MPU);
+  Wire.endTransmission(true);
+
+  pinMode(pinled, OUTPUT);
+  pinMode(Vibration_signal, INPUT); //Set pin as input
+
   mpu.initialize();
-  Wire.begin(sda,scl);
+
+  button.begin(BUTTON_PIN);
+  button.setClickHandler(singleClick);
+  button.setLongClickHandler(longClick);
+  button.setDoubleClickHandler(doubleClick);
+  button.setTripleClickHandler(tripleClick);
+  
+  ID_PLACA = "ESP" + String(ESP.getChipId()); //Obtenemos el chipID
+
+  //Creamos los topics
+  topic_conexion="II7/"+ ID_PLACA +"/conexion"; //Publicar
+  topic_Alexa="II7/"+ ID_PLACA +"/Alexa"; //Publicar
+  topic_Spotify="II7/"+ ID_PLACA +"/Spotify"; //Publicar
+  
+
+  // Nos conectamos al WiFi
+  conecta_wifi();
+   // Inicializamos conexión MQTT
+  mqtt_client.setServer(mqttServer.c_str(), 1883);
+  mqtt_client.setBufferSize(512); // para poder enviar mensajes de hasta X bytes
+
+  conecta_mqtt();
     
   if (mpu.testConnection()) Serial.println("Sensor iniciado correctamente");
   else Serial.println("Error al iniciar el sensor");
   
   Serial.println("MPU6050 Found!");
-  
-  conecta_wifi();
-
-  ID_PLACA = "ESP" + String( ESP.getChipId() );
-  topic_pub = "II7/" + ID_PLACA;// + ""; // Falta por rellenar
-  topic_sub = "II7/" + ID_PLACA + "orden";
-
-  mqtt_client.setServer(mqtt_server.c_str(), 1883);
-  mqtt_client.setBufferSize(512); // para poder enviar mensajes de hasta X bytes
-  mqtt_client.setCallback(procesa_mensaje);
-  conecta_mqtt();
-
-  dht.setup(5, DHTesp::DHT11); // Conectar el sensor DHT al GPIO 5
-  pinMode(Vibration_signal, INPUT); //Set pin as input
 
   mpu.CalibrateGyro(6);
   
@@ -136,12 +155,66 @@ void setup(void)
   tiempo_prev=millis();
   Serial.println("Fin setup");
 }
+//-------------------------------------------------------
+//                      LOOP
+//-------------------------------------------------------
+void loop() {
+  loop2(); //SOLO EN MODO PRUEBA
+  button.loop(); //Comprueba todo el tiempo el tipo de pulsación
+}
 
-void loop() 
-{
-// Leer las aceleraciones y velocidades angulares
+//-------------------------------------------------------
+//               FUNCIONES PULSACIONES
+//-------------------------------------------------------
+void singleClick(Button2& btn) {
+    Serial.println("click\n");
+    estado_stop=false;
+    estado_play=true;
+}
+void longClickDetected(Button2& btn) {
+    Serial.println("long click detected");
+}
+void longClick(Button2& btn) {
+    Serial.println("long click\n");
+    loop2();
+}
+void doubleClick(Button2& btn) {
+    Serial.println("double click\n");
+    estado_stop=true;
+    estado_play=false;
+}
+void tripleClick(Button2& btn) {
+    Serial.println("triple click\n");
+}
+//-------------------------------------------------------
+//               FUNCION SPOTIFY
+//-------------------------------------------------------
+void altavoz(){
+  StaticJsonDocument<300> jsonDoc;
+  jsonDoc["Pause"] = estado_stop;
+  jsonDoc["Play"] = estado_play;
+  jsonDoc["Skip"] = skiptoprevious;
+  jsonDoc["Next"] = skiptonext;
+
+  // Serializar el objeto JSON a una cadena
+  String jsonPayload;
+  serializeJson(jsonDoc, jsonPayload);
+
+  // Publicar el JSON en el tema MQTT
+  mqtt_client.publish(topic_Spotify.c_str(), jsonPayload.c_str());
+  Serial.println("Topic   : "+ topic_Spotify);
+  Serial.println("Payload : "+ jsonPayload);
+}
+//-------------------------------------------------------
+//               PULSACIÓN LARGA
+//-------------------------------------------------------
+void loop2(){
+  // Leer las aceleraciones y velocidades angulares
   mpu.getAcceleration(&ax, &ay, &az);
   mpu.getRotation(&gx, &gy, &gz);
+
+  temp_raw = mpu.getTemperature();
+  temperatura = float(temp_raw + 521)/340 + 35.0
 
   float ax_m_s2 = ax * (9.81/16384.0);
   float ay_m_s2 = ay * (9.81/16384.0);
@@ -151,15 +224,14 @@ void loop()
   float gz_deg_s = gz * (250.0/32768.0);
 
   //Mostrar las lecturas separadas por un [tab]
-  Serial.println();
-  Serial.print("a[x y z](m/s2):\t");
-  Serial.print(ax_m_s2); Serial.print("\t");
-  Serial.print(ay_m_s2); Serial.print("\t");
-  Serial.print(az_m_s2);
-  Serial.print("\ng[x y z](deg/s):\t");
-  Serial.print(gx_deg_s); Serial.print("\t");
-  Serial.print(gy_deg_s); Serial.print("\t");
-  Serial.println(gz_deg_s);
+  // Serial.print("a[x y z](m/s2):\t");
+  // Serial.print(ax_m_s2); Serial.print("\t");
+  // Serial.print(ay_m_s2); Serial.print("\t");
+  // Serial.print(az_m_s2);
+  // Serial.print("\ng[x y z](deg/s):\t");
+  // Serial.print(gx_deg_s); Serial.print("\t");
+  // Serial.print(gy_deg_s); Serial.print("\t");
+  // Serial.println(gz_deg_s);
 
   //Calcular los angulos de inclinacion:
   float accel_ang_x=atan(ax/sqrt(pow(ay,2) + pow(az,2)))*(180.0/3.14);
@@ -167,13 +239,12 @@ void loop()
   float accel_ang_z=atan(az/sqrt(pow(ax,2) + pow(ay,2)))*(180.0/3.14);
 
   //Mostrar los angulos separadas por un [tab]
-  Serial.println();
-  Serial.print("Inclinacion en X: ");
-  Serial.print(accel_ang_x); 
-  Serial.print("\nInclinacion en Y: ");
-  Serial.println(accel_ang_y);
-  Serial.print("\nInclinacion en Z: ");
-  Serial.println(accel_ang_z);
+  // Serial.print("Inclinacion en X: ");
+  // Serial.print(accel_ang_x); 
+  // Serial.print("\nInclinacion en Y: ");
+  // Serial.println(accel_ang_y);
+  // Serial.print("\nInclinacion en Z: ");
+  // Serial.println(accel_ang_z);
 
   dt = millis()-tiempo_prev;
   tiempo_prev=millis();
@@ -186,54 +257,68 @@ void loop()
   girosc_ang_y_prev=girosc_ang_y;
   girosc_ang_z_prev=girosc_ang_z;
 
-  float girz = fmod(girosc_ang_z,float(360));
+  float girz = fmod(girosc_ang_z,float(180));
 
   //Mostrar los angulos separadas por un [tab]
-  Serial.println();
-  Serial.print("\nRotacion en X:  ");
+  Serial.print("Rotacion en X:  ");
   Serial.print(girosc_ang_x); 
-  Serial.print("\nRotacion en Y: ");
+  Serial.print("\tRotacion en Y: ");
   Serial.println(girosc_ang_y);
-  Serial.print("\nRotacion en mod: ");
+  Serial.print("Rotacion en mod: ");
   Serial.println(girz);
-  int brillo = map(abs(girz), 360, 0, 0, 1024);
-  analogWrite(led, brillo);
-
+  
   // Si la rotación en el eje X supera el umbral establecido
-  if (abs(accel_ang_x) >= umbral_giro_x) {
-    Serial.println("¡Giro en el eje X detectado!");
-    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+  if (abs(accel_ang_x) >= umbral) {
+    //Serial.println("¡Giro en el eje X detectado!");
+    if(accel_ang_x>0){
+      skiptoprevious = false;
+      skiptonext = true;
+    } else if (accel_ang<0){
+      skiptoprevious = true;
+      skiptonext = false;
+    }    
   }
-    if (abs(accel_ang_y) >= umbral_giro_x) {
-    Serial.println("¡Giro en el eje Y detectado!");
+    if (abs(accel_ang_y) >= umbral) {
+    //Serial.println("¡Giro en el eje Y detectado!");
     // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+      if(accel_ang_y<0){
+        termostato=-1;
+      }else if(accel_ang_y>0){
+        termostato=1;
+      }
   }
-    if (abs(accel_ang_z) >= umbral_giro_x) {
-    Serial.println("¡Giro en el eje Z detectado!");
-    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+      // Si la rotación en el eje Z supera el umbral establecido
+ if (abs(accel_ang_z) >= umbral) {
+  //Serial.println("¡Giro en el eje Z detectado!");
+    // Limita la intensidad a 0 y 255
+    brillo = map(girz, 0,180, 255,0);
+    brillo = constrain(brillo,0,255);
+    analogWrite(pinled, brillo);
   }
+  StaticJsonDocument<300> jsonDoc;
+  jsonDoc["Lampara"] = brillo;
+  jsonDoc["Temperatura"] = temperatura;
+  jsonDoc["Termostato"] = termostato;
 
-  // ------------ SENSOR DE VIBRACION -------------
+  // Serializar el objeto JSON a una cadena
+  String jsonPayload;
+  serializeJson(jsonDoc, jsonPayload);
+
+  // Publicar el JSON en el tema MQTT
+  mqtt_client.publish(topic_Alexa.c_str(), jsonPayload.c_str());
+  Serial.println("Topic   : "+ topic_Alexa);
+  Serial.println("Payload : "+ jsonPayload);
+
   Serial.print("\nVibration status: ");
   bool Sensor_State = digitalRead(Vibration_signal);
   if (Sensor_State == true) {
     Serial.println("Sensing vibration\n");
-    delay(1000);
+    delay(500);
   }
   else if(Sensor_State == false){
     Serial.println("No vibration\n");
-    delay(1000);
+    delay(500);
   }
 
-  // --------- PUBLICADOR MQTT ------------
-  temperatura = dht.getTemperature();
-  mqtt_client.publish(topic_pub.c_str(), String(temperatura).c_str());
-  Serial.println();
-  Serial.println("Topic   : "+ topic_pub);
-  Serial.println("Payload : "+ String(temperatura));
-
-  // --------- SUSCRIPTOR MQTT ------------
-  mqtt_client.subscribe(topic_sub.c_str());
-
-  delay(1000);  
+  delay(100);
 }
