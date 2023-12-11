@@ -33,19 +33,18 @@ bool estado_stop=false;
 bool estado_play=false;
 bool skiptoprevious=false;
 bool skiptonext=false;
-float temperatura;
 int termostato=0;
 
 // Definimos datos de la red WiFi
 // const String ssid = "dlink-AE58";
 // const String password = "ceyza33866";
- const String ssid = "infind";
- const String password = "1518wifi";
+ const String ssid = "OnePlus Nord 2T 5G";
+ const String password = "i5ybfihq";
 
 // Definimos el servidor MQTT
 const String mqttServer = "iot.ac.uma.es";
-const String mqttUser = "infind";
-const String mqttPassword = "zancudo";
+const String mqttUser = "II7";
+const String mqttPassword = "hbum58oh";
 
 // Definimos String
 String ID_PLACA;
@@ -159,8 +158,13 @@ void setup(void) {
 //                      LOOP
 //-------------------------------------------------------
 void loop() {
-  loop2(); //SOLO EN MODO PRUEBA
+  if (!mqtt_client.connected()) conecta_mqtt();
+  
+  mqtt_client.loop(); // esta llamada para que la librería recupere el control
+
+  //loop2(); //SOLO EN MODO PRUEBA
   button.loop(); //Comprueba todo el tiempo el tipo de pulsación
+
 }
 
 //-------------------------------------------------------
@@ -170,6 +174,7 @@ void singleClick(Button2& btn) {
     Serial.println("click\n");
     estado_stop=false;
     estado_play=true;
+    altavoz();
 }
 void longClickDetected(Button2& btn) {
     Serial.println("long click detected");
@@ -182,6 +187,7 @@ void doubleClick(Button2& btn) {
     Serial.println("double click\n");
     estado_stop=true;
     estado_play=false;
+    altavoz();
 }
 void tripleClick(Button2& btn) {
     Serial.println("triple click\n");
@@ -190,20 +196,20 @@ void tripleClick(Button2& btn) {
 //               FUNCION SPOTIFY
 //-------------------------------------------------------
 void altavoz(){
-  StaticJsonDocument<300> jsonDoc;
-  jsonDoc["Pause"] = estado_stop;
-  jsonDoc["Play"] = estado_play;
-  jsonDoc["Skip"] = skiptoprevious;
-  jsonDoc["Next"] = skiptonext;
+  StaticJsonDocument<300> jsonSpoty;
+  jsonSpoty["Pause"] = estado_stop;
+  jsonSpoty["Play"] = estado_play;
+  jsonSpoty["Skip"] = skiptoprevious;
+  jsonSpoty["Next"] = skiptonext;
 
   // Serializar el objeto JSON a una cadena
-  String jsonPayload;
-  serializeJson(jsonDoc, jsonPayload);
+  String jsonString;
+  serializeJson(jsonSpoty, jsonString);
 
   // Publicar el JSON en el tema MQTT
-  mqtt_client.publish(topic_Spotify.c_str(), jsonPayload.c_str());
+  mqtt_client.publish(topic_Spotify.c_str(), jsonString.c_str());
   Serial.println("Topic   : "+ topic_Spotify);
-  Serial.println("Payload : "+ jsonPayload);
+  Serial.println("Payload : "+ jsonString);
 }
 //-------------------------------------------------------
 //               PULSACIÓN LARGA
@@ -214,7 +220,7 @@ void loop2(){
   mpu.getRotation(&gx, &gy, &gz);
 
   temp_raw = mpu.getTemperature();
-  temperatura = float(temp_raw + 521)/340 + 35.0
+  temperatura = float(temp_raw + 521)/340 + 35.0;
 
   float ax_m_s2 = ax * (9.81/16384.0);
   float ay_m_s2 = ay * (9.81/16384.0);
@@ -273,9 +279,11 @@ void loop2(){
     if(accel_ang_x>0){
       skiptoprevious = false;
       skiptonext = true;
-    } else if (accel_ang<0){
+      altavoz();
+    } else if (accel_ang_x<0){
       skiptoprevious = true;
       skiptonext = false;
+      altavoz();
     }    
   }
     if (abs(accel_ang_y) >= umbral) {
