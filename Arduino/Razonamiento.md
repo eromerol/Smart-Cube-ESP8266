@@ -79,3 +79,5 @@ Obteniendo los ángulos de inclinación:
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/3fe591fe-ae0e-4290-aebb-ff47e098123a" width=600 heigt=300>
 
+[EJEMPLO GET TEMPERATURE](https://www.i2cdevlib.com/forums/topic/612-why-the-3653-degree-offset-to-get-temperature/)
+https://www.i2cdevlib.com/forums/topic/612-why-the-3653-degree-offset-to-get-temperature/
