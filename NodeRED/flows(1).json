@@ -1,0 +1,526 @@
+[
+    {
+        "id": "5c4034e935cb2ed5",
+        "type": "tab",
+        "label": "Alexa",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "bdf25bdd2bc7e23d",
+        "type": "mqtt out",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "topic": "II7/ESP5825935/orden",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b452cd9032236d16",
+        "x": 1080,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "702968e3600fd3f9",
+        "type": "ui_slider",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "label": "Intensidad (%)",
+        "tooltip": "",
+        "group": "f2b40320.566b8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 240,
+        "y": 440,
+        "wires": [
+            [
+                "1d6487162c365b65"
+            ]
+        ]
+    },
+    {
+        "id": "1d6487162c365b65",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "monta json",
+        "func": "return {\"payload\":{\"lampara\":msg.payload}};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "be3c53a720d58f8c",
+        "type": "mqtt in",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "topic": "II7/ESP5825935/Alexa/lampara",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "b452cd9032236d16",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 290,
+        "y": 560,
+        "wires": [
+            [
+                "c891bba0859478cc",
+                "7d817d962e8fa25c"
+            ]
+        ]
+    },
+    {
+        "id": "c891bba0859478cc",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "15989de32ea5cd3f",
+        "type": "ui_gauge",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "group": "f2b40320.566b8",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Intensidad LED",
+        "label": "%",
+        "format": "{{value}}%",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#c1e8fb",
+            "#55a2dd",
+            "#095ece"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1160,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "88786a8cadc432e6",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "extrae intensidad",
+        "func": "msg.payload=msg.payload.lampara;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 750,
+        "y": 560,
+        "wires": [
+            [
+                "15989de32ea5cd3f",
+                "d24adefd4b03461d"
+            ]
+        ]
+    },
+    {
+        "id": "7d817d962e8fa25c",
+        "type": "json",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 510,
+        "y": 560,
+        "wires": [
+            [
+                "88786a8cadc432e6"
+            ]
+        ]
+    },
+    {
+        "id": "72ef4816fe7cede1",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 470,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "994745bab8e0c8c4",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "adapta  mensaje desde Alexa",
+        "func": "if(msg.command==\"SetBrightness\") //level \n    return {\"payload\":{\"lampara\":msg.payload}};\nelse // ON-OFF\n    if(msg.payload==\"ON\") \n        return {\"payload\":{\"lampara\":100}};\n    else \n        return {\"payload\":{\"lampara\":0}};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 380,
+        "wires": [
+            [
+                "bdf25bdd2bc7e23d"
+            ]
+        ]
+    },
+    {
+        "id": "103ace50766fa6a6",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "confirma estado led a Alexa",
+        "func": "msg.acknowledge=true;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 340,
+        "wires": [
+            [
+                "f05dc54c21035f7c"
+            ]
+        ]
+    },
+    {
+        "id": "6f67c8eb8233e294",
+        "type": "alexa-smart-home-v3",
+        "z": "5c4034e935cb2ed5",
+        "conf": "5b17162640a036f0",
+        "device": "57963",
+        "acknowledge": false,
+        "name": "Lámpara",
+        "topic": "",
+        "x": 220,
+        "y": 340,
+        "wires": [
+            [
+                "72ef4816fe7cede1",
+                "994745bab8e0c8c4",
+                "103ace50766fa6a6"
+            ]
+        ]
+    },
+    {
+        "id": "f05dc54c21035f7c",
+        "type": "alexa-smart-home-v3-resp",
+        "z": "5c4034e935cb2ed5",
+        "x": 1110,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "38da4aefd9452f8e",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "actualiza temperatura en Alexa",
+        "func": "return { \"payload\" : { \"state\" : { \"temperature\" : msg.payload } }, \"acknowledge\" : true };",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 910,
+        "y": 240,
+        "wires": [
+            [
+                "6974c9a8dfac9b56"
+            ]
+        ]
+    },
+    {
+        "id": "14547c5d2832a9e4",
+        "type": "mqtt in",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "topic": "II7/ESP5825935/Alexa/temperatura",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "b452cd9032236d16",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 300,
+        "y": 240,
+        "wires": [
+            [
+                "2b7c4b94acf95e9c",
+                "2d5d57dc8011adc5"
+            ]
+        ]
+    },
+    {
+        "id": "2b7c4b94acf95e9c",
+        "type": "json",
+        "z": "5c4034e935cb2ed5",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 570,
+        "y": 240,
+        "wires": [
+            [
+                "81d8720991af8fc8"
+            ]
+        ]
+    },
+    {
+        "id": "81d8720991af8fc8",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "extrae",
+        "func": "msg.payload=msg.payload.BME280.Temperatura;\nmsg.topic=\"Temp\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 240,
+        "wires": [
+            [
+                "38da4aefd9452f8e"
+            ]
+        ]
+    },
+    {
+        "id": "6974c9a8dfac9b56",
+        "type": "alexa-smart-home-v3-state",
+        "z": "5c4034e935cb2ed5",
+        "conf": "5b17162640a036f0",
+        "device": "57964",
+        "name": "Sensor de Temperatura",
+        "x": 1190,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "d24adefd4b03461d",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "intensidad lampara",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "2d5d57dc8011adc5",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "bd0895a6f2a94900",
+        "type": "alexa-smart-home-v3",
+        "z": "5c4034e935cb2ed5",
+        "conf": "5b17162640a036f0",
+        "device": "57965",
+        "acknowledge": true,
+        "name": "Termostato",
+        "topic": "",
+        "x": 220,
+        "y": 640,
+        "wires": [
+            [
+                "2db60ffcd72bf6b5",
+                "e95792debf04220f"
+            ]
+        ]
+    },
+    {
+        "id": "2db60ffcd72bf6b5",
+        "type": "alexa-smart-home-v3-state",
+        "z": "5c4034e935cb2ed5",
+        "conf": "5b17162640a036f0",
+        "device": "57965",
+        "name": "Termostato",
+        "x": 1050,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "72b7301479b873fa",
+        "type": "function",
+        "z": "5c4034e935cb2ed5",
+        "name": "adapta  mensaje temp desde Alexa",
+        "func": "//msg.acknowledge = true;\nif (msg.command ==\"AdjustTargetTemperature\") // level \n    //  1 = increase temp\n    // -1 = decrease temp\n    return {\"payload\":{\n                    \"state\" : { \"temperature\": msg.payload },\n                    \"acknowledge\": true\n            }};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 720,
+        "wires": [
+            [
+                "877d044623b9482f"
+            ]
+        ]
+    },
+    {
+        "id": "877d044623b9482f",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "termostato",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "e95792debf04220f",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "589d8b4224b35796",
+        "type": "alexa-smart-home-v3",
+        "z": "5c4034e935cb2ed5",
+        "conf": "5b17162640a036f0",
+        "device": "58031",
+        "acknowledge": true,
+        "name": "Altavoz",
+        "topic": "",
+        "x": 210,
+        "y": 800,
+        "wires": [
+            [
+                "dd3f7afc64475303"
+            ]
+        ]
+    },
+    {
+        "id": "dd3f7afc64475303",
+        "type": "debug",
+        "z": "5c4034e935cb2ed5",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "b452cd9032236d16",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "iot.ac.uma.es",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "f2b40320.566b8",
+        "type": "ui_group",
+        "name": "Control LED",
+        "tab": "edce03d1.68b46",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "5b17162640a036f0",
+        "type": "alexa-smart-home-v3-conf",
+        "username": "mariaherresa",
+        "mqttserver": "mq-red.cb-net.co.uk",
+        "webapiurl": "red.cb-net.co.uk",
+        "contextName": "memory"
+    },
+    {
+        "id": "edce03d1.68b46",
+        "type": "ui_tab",
+        "name": "TAREA GRUPO",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
