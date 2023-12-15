@@ -15,6 +15,8 @@ Nuestra versión hecha a mano se encargará de las mismas caraterísticas, y en 
 *   [Baterías y Cargador LiPo](https://amzn.eu/d/7FSwxyN)
 *   [Placa de pruebas](https://amzn.eu/d/8O4BMnn)
 *   [Cables Dupont](https://amzn.eu/d/6FpwoLk)
+*   Pulsador
+*   Resistencias
 
 👨‍💻​APPS
 ------
@@ -77,7 +79,7 @@ Info vía: [Link1](https://chewett.co.uk/blog/1849/using-the-sw-420-motion-vibra
 
 ### ESQUEMÁTICO COMPLETO
 
-Para el desarrollo completo del cubo, se han añadido un botón de presencia (pulsador) y un LED. El esquemático completo, incluyendo los dos componentes descritos anteriormente, el pulsador, el LED y la placa, sería el siguiente:
+Para el desarrollo completo del cubo, se han añadido un **botón de presencia** (pulsador) y un **LED**. El esquemático completo, incluyendo los dos componentes descritos anteriormente, el pulsador, el LED y la placa, sería el siguiente:
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/a305d1a0-a08e-4393-8b93-d0e8f610e64b" width=900 height=500>
 
