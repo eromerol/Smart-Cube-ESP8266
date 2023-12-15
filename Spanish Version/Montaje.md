@@ -47,9 +47,10 @@ El esquema de conexión de este dispositivo con la placa ESP8266, junto con el p
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/46695a02-ad73-451e-aa2e-697742e766d3" width=600 height=300>
 
+    
+<p align="center">
+<img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/9ef484c0-5d0d-419f-b800-3151b1fdcd97" width=500 height=400>
 
-
-![conexion_esp8266_mpu6050](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/9ef484c0-5d0d-419f-b800-3151b1fdcd97)
 
 Info vía: [Link1](http://www.sinaptec.alomar.com.ar/2017/10/tutorial-23-esp8266-obtener-inclinacion.html)
           [Link2](https://randomnerdtutorials.com/esp8266-nodemcu-mpu-6050-accelerometer-gyroscope-arduino/)
@@ -67,15 +68,19 @@ El diagrama de conexión de este dispositivo con la placa ESP8266, junto con el 
 <p align="center">
 <img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/22e217f5-1d83-432e-b3ff-43aa797a11b2" width=600 height=300>
 
-![conexion_esp8266_sw420](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/842322b1-bf7d-4206-b93c-53274cbb4ba2)
+<p align="center">
+<img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/842322b1-bf7d-4206-b93c-53274cbb4ba2" width=500 height=400>
+
 
 Info vía: [Link1](https://chewett.co.uk/blog/1849/using-the-sw-420-motion-vibration-sensor-with-a-wemos-d1-mini-esp8266/)
 
 
-### ESQUEMÁTICO
+### ESQUEMÁTICO COMPLETO
 
-El esquemático completo, incluyendo los dos componentes descritos anteriormente junto con la placa sería el siguiente:
+Para el desarrollo completo del cubo, se han añadido un botón de presencia (pulsador) y un LED. El esquemático completo, incluyendo los dos componentes descritos anteriormente, el pulsador, el LED y la placa, sería el siguiente:
+<p align="center">
+<img src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/a305d1a0-a08e-4393-8b93-d0e8f610e64b" width=900 height=500>
 
-![conexion_esp8266_mpu6050_sw420](https://github.com/eromerol/Smart-Cube-ESP8266/assets/124197400/79b4f48f-de9e-4f82-8185-d8d1e5434b47)
+**NOTA:** para la comunicación I2C se han añadido las resistencias de Pull-Up en las líneas SCL y SDA.
 
 Esta imagen, al igual que los esquemáticos anteriores, está realizada con la aplicación fritzing. Los archivos de los componentes se encuentran en la siguiente carpeta: [Fritzing](https://github.com/eromerol/Smart-Cube-ESP8266/tree/main/Fritzing)
