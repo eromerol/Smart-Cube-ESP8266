@@ -25,22 +25,24 @@ int pinled = 13;
 int led = 2;
 int Vibration_signal = 14;
 
-
 // Declaramos variables
 int brillo = 0;
-int lamp=0;
+int lamp = 0;
 float temperatura;
 String estado_stop="desactivado";
 String estado_play="desactivado";
 String skiptoprevious="desactivado";
 String skiptonext="desactivado";
 int termostato = 0;
+int termostato_prev = 25;
 
 // Definimos datos de la red WiFi
 // const String ssid = "dlink-AE58";
 // const String password = "ceyza33866";
- const String ssid = "OnePlus Nord 2T 5G";
- const String password = "i5ybfihq";
+// const String ssid = "OnePlus Nord 2T 5G";
+// const String password = "i5ybfihq";
+ const String ssid = "María's Galaxy A13";
+ const String password = "mariaguapa";
 
 // Definimos el servidor MQTT
 const String mqttServer = "iot.ac.uma.es";
@@ -101,7 +103,7 @@ void conecta_mqtt() {
     } else {
        Serial.println("ERROR:"+ String(mqtt_client.state()) +" reintento en 5s" );
 
-      // Esperamos 2 segundos antes de volver a intentarlo
+      // Esperamos 5 segundos antes de volver a intentarlo
       delay(5000);
     }
   }
@@ -119,8 +121,9 @@ void setup(void) {
   pinMode(pinled, OUTPUT);
   pinMode(Vibration_signal, INPUT); //Set pin as input
 
-  mpu.initialize();
+  mpu.initialize(); // Inicializamos el giroscopio
 
+  // Deteccion de pulsacion del boton
   button.begin(BUTTON_PIN);
   button.setClickHandler(singleClick);
   button.setLongClickHandler(longClick);
@@ -130,7 +133,7 @@ void setup(void) {
   
   ID_PLACA = "ESP" + String(ESP.getChipId()); //Obtenemos el chipID
 
-  //Creamos los topics
+  // Creamos los topics
   topic_conexion="II7/"+ ID_PLACA +"/conexion"; //Publicar
   topic_Alexa="II7/"+ ID_PLACA +"/Alexa"; //Publicar
   topic_Spotify="II7/"+ ID_PLACA +"/Spotify"; //Publicar
@@ -138,10 +141,10 @@ void setup(void) {
 
   // Nos conectamos al WiFi
   conecta_wifi();
-   // Inicializamos conexión MQTT
+
+   // Inicializamos el servidor MQTT y nos conectamos
   mqtt_client.setServer(mqttServer.c_str(), 1883);
   mqtt_client.setBufferSize(512); // para poder enviar mensajes de hasta X bytes
-
   conecta_mqtt();
     
   if (mpu.testConnection()) Serial.println("Sensor iniciado correctamente");
@@ -149,11 +152,12 @@ void setup(void) {
   
   Serial.println("MPU6050 Found!");
 
+  // Calibramos el giroscopio
   mpu.CalibrateGyro(6);
   
   delay(100);
 
-  tiempo_prev=millis();
+  tiempo_prev = millis();
   Serial.println("Fin setup");
 }
 //-------------------------------------------------------
@@ -173,23 +177,32 @@ void loop() {
 //               FUNCIONES PULSACIONES
 //-------------------------------------------------------
 void singleClick(Button2& btn) {
-    Serial.println("click\n");
-    estado_stop="desactivado";
-    estado_play="activado";
-    altavoz();
+  
+  Serial.println("click\n");
+
+  // Activamos el play y llamamos a la funcion 'altavoz'
+  estado_stop="desactivado";
+  estado_play="activado";
+  altavoz();
 }
 //void longClickDetected(Button2& btn) {
 //    Serial.println("long click detected");
 //}
 void longClick(Button2& btn) {
-    Serial.println("long click\n");
-    unsigned int time= btn.wasPressedFor();
-    if (time>3000){ // 3 Segundos
-      loop2();
-    }
+
+  Serial.println("long click\n");
+
+  // Almacenamos el tiempo de pulsacion
+  unsigned int time= btn.wasPressedFor();
+  if (time>2000){ // Si es mayor a 2 Segundos, se llama al loop 2
+    loop2();
+  }
 }
 void doubleClick(Button2& btn) {
+
     Serial.println("double click\n");
+
+    // Activamos el stop y llamamos a la funcion 'altavoz'
     estado_stop="activado";
     estado_play="desactivado";
     altavoz();
@@ -201,32 +214,36 @@ void tripleClick(Button2& btn) {
 //               FUNCION SPOTIFY
 //-------------------------------------------------------
 void altavoz(){
+
+  // Creamos un objeto JSON para el topic 'Spotify'
   StaticJsonDocument<300> jsonSpoty;
   jsonSpoty["Pause"] = estado_stop;
   jsonSpoty["Play"] = estado_play;
   jsonSpoty["Skip"] = skiptoprevious;
   jsonSpoty["Next"] = skiptonext;
 
-  // Serializar el objeto JSON a una cadena
+  // Serializamos el objeto JSON a una cadena
   String jsonString;
   serializeJson(jsonSpoty, jsonString);
 
-  // Publicar el JSON en el tema MQTT
+  // Publicamos el JSON en el topic 'Spotify' de MQTT
   mqtt_client.publish(topic_Spotify.c_str(), jsonString.c_str());
   Serial.println("Topic   : "+ topic_Spotify);
   Serial.println("Payload : "+ jsonString);
 }
 //-------------------------------------------------------
-//               PULSACIÓN LARGA
+//               PULSACION LARGA
 //-------------------------------------------------------
 void loop2(){
-  // Leer las aceleraciones y velocidades angulares
+  // Leer las aceleraciones y velocidades angulares, todas de tipo entero de 16 bits y en complemento a 2
   mpu.getAcceleration(&ax, &ay, &az);
   mpu.getRotation(&gx, &gy, &gz);
 
-  temp_raw = mpu.getTemperature();
+  // Registramos la temperatura y la convertimos a grados celsius
+  temp_raw = mpu.getTemperature(); // Temperatura en formato int_16 y en complemento a 2
   temperatura = (temp_raw + 521)/340 + 35.0;
 
+  // Conversion a sistema internacional
   float ax_m_s2 = ax * (9.81/16384.0);
   float ay_m_s2 = ay * (9.81/16384.0);
   float az_m_s2 = az * (9.81/16384.0);
@@ -257,9 +274,11 @@ void loop2(){
   // Serial.print("\nInclinacion en Z: ");
   // Serial.println(accel_ang_z);
 
+  // Necesitamos el incremento de tiempo
   dt = millis()-tiempo_prev;
   tiempo_prev=millis();
   
+  // El nuevo angulo de rotacion es el incremento de tiempo por la velocidad angular (gx) + la rotacion anterior 
   girosc_ang_x = (gx/131)*dt/1000.0 + girosc_ang_x_prev;
   girosc_ang_y = (gy/131)*dt/1000.0 + girosc_ang_y_prev;
   girosc_ang_z = (gz/131)*dt/1000.0 + girosc_ang_z_prev;
@@ -268,48 +287,56 @@ void loop2(){
   girosc_ang_y_prev=girosc_ang_y;
   girosc_ang_z_prev=girosc_ang_z;
 
+  // Limitamos que la lectura sea entre 0 y 180 (fmod devuelve el resto de dividir girosc_ang_z/180)
   float girz = fmod(girosc_ang_z,float(180));
 
   //Mostrar los angulos separadas por un [tab]
-  Serial.print("Rotacion en X:  ");
+  Serial.print("Rotacion en X: ");
   Serial.print(girosc_ang_x); 
   Serial.print("\tRotacion en Y: ");
   Serial.println(girosc_ang_y);
   Serial.print("Rotacion en mod: ");
   Serial.println(girz);
+
+  // ---------- INTERPRETACION DE LAS LECTURAS ------------
   
   // Si la rotación en el eje X supera el umbral establecido
   if (abs(accel_ang_x) >= umbral) {
     //Serial.println("¡Giro en el eje X detectado!");
-    if(accel_ang_x>0){
+    if(accel_ang_x>0){   // Pasa a la cancion siguiente
       skiptoprevious ="desactivado";
-      skiptonext ="activado";
+      skiptonext = "activado";
       altavoz();
-    } else if (accel_ang_x<0){
-      skiptoprevious ="activado";
-      skiptonext ="desactivado";
+    } else if (accel_ang_x<0){   // Retrocede a la cancion anterior
+      skiptoprevious = "activado";
+      skiptonext = "desactivado";
       altavoz();
     }    
   }
-    if (abs(accel_ang_y) >= umbral) {
+  // Si la rotación en el eje Y supera el umbral establecido
+  if (abs(accel_ang_y) >= umbral) {
     //Serial.println("¡Giro en el eje Y detectado!");
     // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
-      if(accel_ang_y<0){
-        termostato=-1;
-      }else if(accel_ang_y>0){
-        termostato=1;
-      }
+    if(accel_ang_y<0){
+      termostato = termostato_prev - 1;   // Decrementa un grado 
+    }else if(accel_ang_y>0){
+      termostato = termostato_prev + 1;    // Incrementa un grado
+    }
+    termostato_prev = termostato; // Lo almacenamos
   }
-      // Si la rotación en el eje Z supera el umbral establecido
- if (abs(accel_ang_z) >= umbral) {
-  //Serial.println("¡Giro en el eje Z detectado!");
-    // Limita la intensidad a 0 y 255
+  // Si la rotación en el eje Z supera el umbral establecido
+  if (abs(accel_ang_z) >= umbral) {
+    //Serial.println("¡Giro en el eje Z detectado!");
+    // Limita la intensidad del LED de 0 a 255
     brillo = map(girz, 0,180, 255,0);
     brillo = constrain(brillo,0,255);
+    analogWrite(pinled, brillo);   // Lo manda al LED
+    // Limita la intensidad de la lampara de 0 a 100
     lamp = map(girz, 0,180, 100,0);
     lamp = constrain(lamp,0,100);
-    analogWrite(pinled, brillo);
   }
+
+  // Construimos el objeto JSON para el topic 'Alexa'
   StaticJsonDocument<300> jsonDoc;
   jsonDoc["Lampara"] = lamp;
   jsonDoc["Temperatura"] = temperatura;
@@ -319,10 +346,12 @@ void loop2(){
   String jsonPayload;
   serializeJson(jsonDoc, jsonPayload);
 
-  // Publicar el JSON en el tema MQTT
+  // Publicar el JSON en el topic 'Alexa'
   mqtt_client.publish(topic_Alexa.c_str(), jsonPayload.c_str());
   Serial.println("Topic   : "+ topic_Alexa);
   Serial.println("Payload : "+ jsonPayload);
+
+  // ------------ VIBRACIONES ---------------
 
   Serial.print("\nVibration status: ");
   bool Sensor_State = digitalRead(Vibration_signal);
