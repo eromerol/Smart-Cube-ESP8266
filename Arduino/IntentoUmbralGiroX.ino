@@ -87,18 +87,34 @@ void loop() {
   girosc_ang_y_prev=girosc_ang_y;
   girosc_ang_z_prev=girosc_ang_z;
 
+  float girx = fmod(girosc_ang_x,float(180));
+  float giry = fmod(girosc_ang_y,float(180));
+  float girz = fmod(girosc_ang_z,float(180));
+
   //Mostrar los angulos separadas por un [tab]
-  Serial.print("\nRotacion en X:  ");
-  Serial.print(girosc_ang_x); 
-  Serial.print("\nRotacion en Y: ");
-  Serial.println(girosc_ang_y);
-  Serial.print("\nRotacion en Z: ");
-  Serial.println(girosc_ang_z);
+  Serial.print("\tRotacion en X:  ");
+  Serial.print(girx); 
+  Serial.print("\tRotacion en Y: ");
+  Serial.print(giry);
+  Serial.print("\tRotacion en Z: ");
+  Serial.print(girz);
+  Serial.println();
 
   // Si la rotación en el eje X supera el umbral establecido
-  if (abs(girosc_ang_x) >= umbral_giro_x) {
-    Serial.println("¡Giro en el eje X detectado!");
+  if (abs(girx) >= umbral_giro_x) {
+    Serial.println("¡Giro en el eje X detectado!: " + String(girx));
     // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+    delay(1000);
+  }
+  else if (abs(giry) >= umbral_giro_x) {
+    Serial.println("¡Giro en el eje X detectado!: " + String(giry));
+    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+    delay(1000);
+  }
+  else if (abs(girz) >= umbral_giro_x) {
+    Serial.println("¡Giro en el eje X detectado!: " + String(girz));
+    // Realiza alguna acción aquí (p. ej., encender un LED, enviar una señal, etc.)
+    delay(1000);
   }
 
   Serial.print("\nVibration status: ");
@@ -112,6 +128,6 @@ void loop() {
     delay(1000);
   }
 
-  delay(2000);
+  delay(20);
   
 }
