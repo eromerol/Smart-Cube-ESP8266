@@ -56,6 +56,7 @@ String estado_stop="desactivado";
 String estado_play="desactivado";
 String skiptoprevious="desactivado";
 String skiptonext="desactivado";
+int Cortina;
 int termostato;
 int termostato_prev = 25;
 int contador=1;
@@ -63,14 +64,14 @@ int codigoStatus;
 String respuesta="";
 
 // Definimos datos de la red WiFi
-// const String ssid = "dlink-AE58";
-// const String password = "ceyza33866";
+const String ssid = "dlink-AE58";
+const String password = "ceyza33866";
 // const String ssid = "infind";
 // const String password = "1518wifi";
 // const String ssid = "María's Galaxy A13";
 // const String password = "mariaguapa";
-const String ssid = "HUAWEI";
-const String password = "Internet";
+//const String ssid = "HUAWEI";
+//const String password = "Internet";
 
 // Definimos el servidor MQTT
 const String mqttServer = "iot.ac.uma.es";
@@ -252,7 +253,6 @@ void loop() {
   
   mqtt_client.loop(); // esta llamada para que la librería recupere el control
 
-  //loop2(); //SOLO EN MODO PRUEBA
   button.loop(); //Comprueba todo el tiempo el tipo de pulsación
 
 }
@@ -329,6 +329,7 @@ void Alexa()
   jsonDoc["Lampara"] = lamp;
   jsonDoc["Temperatura"] = temperatura;
   jsonDoc["Termostato"] = termostato;
+  jsonDoc["Cortina"] = Cortina;
 
   // Serializar el objeto JSON a una cadena
   String jsonPayload;
