@@ -1,5 +1,8 @@
 # Smart-Cube-ESP8266
-DIY version of the Aqara Magic Cube with ESP8266.
+
+<img align="right" src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/d0d91358-7f2e-4a00-8792-92a445857e86" weight=250 height=250>
+
+DIY version of the **Aqara Magic Cube** with ESP8266.
 
 This project is part of the Industrial Informatics course of the Electronics, Robotics and Mechatronics Engineering degree at the University of Malaga. 
 
