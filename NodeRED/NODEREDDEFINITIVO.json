@@ -1,0 +1,2693 @@
+[
+    {
+        "id": "356bd59b2af96803",
+        "type": "tab",
+        "label": "Proyecto IoT",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "2acbef832f06e01e",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza temperatura en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"temperature\": msg.payload } }, \"acknowledge\" : true };\n\n// Hará falta: \"command\": \"AdjustTargetTemperature\"??\n\n//Opción 2\n//return { \"payload\": msg.payload, \"temperatureScale\": \"CELSIUS\", \"acknowledge\": true };",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 760,
+        "wires": [
+            [
+                "035c4dbd60238de3",
+                "6d0b48e668dc8eb4",
+                "0ddf83a021346127"
+            ]
+        ]
+    },
+    {
+        "id": "f459df7c35440537",
+        "type": "mqtt in",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "topic": "II7/ESP833252/Alexa",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "b452cd9032236d16",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 700,
+        "wires": [
+            [
+                "09278e6c7893c02e"
+            ]
+        ]
+    },
+    {
+        "id": "09278e6c7893c02e",
+        "type": "json",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 470,
+        "y": 700,
+        "wires": [
+            [
+                "54921cefb3bbd354",
+                "3ce1bb020b946116",
+                "0c33131d953c8af9",
+                "87a6d632612be31a",
+                "502b2a29d2bbe350",
+                "383eb8d868c2dabc",
+                "96a192a56b3951ab"
+            ]
+        ]
+    },
+    {
+        "id": "3ce1bb020b946116",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae temp",
+        "func": "var temp = msg.payload.Temperatura;\nmsg.payload= temp;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 760,
+        "wires": [
+            [
+                "2acbef832f06e01e"
+            ]
+        ]
+    },
+    {
+        "id": "035c4dbd60238de3",
+        "type": "alexa-smart-home-v3-state",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "57964",
+        "name": "Sensor de Temperatura",
+        "x": 1310,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "54921cefb3bbd354",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Alexa desde MQTT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "2eacf7a5e422eb0b",
+        "type": "alexa-smart-home-v3-state",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "58031",
+        "name": "Altavoz",
+        "x": 1260,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "1f8f3cf0a41b20a4",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Altavoz desde Alexa",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "command",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "520039bfc514870a",
+        "type": "alexa-smart-home-v3",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "57964",
+        "acknowledge": false,
+        "name": "Sensor de Temperatura",
+        "topic": "",
+        "x": 140,
+        "y": 760,
+        "wires": [
+            [
+                "e1a96e68bf5f7dc4",
+                "3ce1bb020b946116"
+            ]
+        ]
+    },
+    {
+        "id": "e1a96e68bf5f7dc4",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Temperatura desde Alexa",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "0c33131d953c8af9",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae brillo",
+        "func": "var brillo = msg.payload.Lampara;\nmsg.payload = Number(brillo);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 920,
+        "wires": [
+            [
+                "284cca5275f7b069"
+            ]
+        ]
+    },
+    {
+        "id": "284cca5275f7b069",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza brillo en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"brightness\": msg.payload }}, \"acknowledge\": true};\n// \"command\": \"AdjustBrightness\",",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 920,
+        "wires": [
+            [
+                "b63cda13ca69185e",
+                "b6922e5478abb52d",
+                "a1aa0b20cb35e49c",
+                "bb09b1ca65b15d08",
+                "b068c2521f43cf15"
+            ]
+        ]
+    },
+    {
+        "id": "6394324469a86226",
+        "type": "alexa-smart-home-v3",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "57965",
+        "acknowledge": false,
+        "name": "Termostato",
+        "topic": "",
+        "x": 100,
+        "y": 1200,
+        "wires": [
+            [
+                "87a6d632612be31a",
+                "3c32ab68a18a03d9"
+            ]
+        ]
+    },
+    {
+        "id": "87a6d632612be31a",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae termo",
+        "func": "var termo = msg.payload.Termostato;\nmsg.payload = termo;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 1200,
+        "wires": [
+            [
+                "b582daa76e9b088c"
+            ]
+        ]
+    },
+    {
+        "id": "3c32ab68a18a03d9",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Termostato desde Alexa",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "8bd9f1ebb1a78cfe",
+        "type": "alexa-smart-home-v3-state",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "57965",
+        "name": "Termostato",
+        "x": 1270,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "b7fb2347d57860e5",
+        "type": "alexa-smart-home-v3",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "57963",
+        "acknowledge": false,
+        "name": "Lampara",
+        "topic": "",
+        "x": 100,
+        "y": 880,
+        "wires": [
+            [
+                "ef9a56d6e4541417",
+                "8f4be9c4cf53af3b"
+            ]
+        ]
+    },
+    {
+        "id": "b63cda13ca69185e",
+        "type": "alexa-smart-home-v3-state",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "57963",
+        "name": "Lampara",
+        "x": 1260,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "ef9a56d6e4541417",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Lámpara desde Alexa",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "b6922e5478abb52d",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Lámpara Command",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "6d0b48e668dc8eb4",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Sensor Temperatura Command",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "6cbb36ea5755ffde",
+        "type": "ui_gauge",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "group": "d015aa69f1b0dcff",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Termostato",
+        "label": "units",
+        "format": "{{msg.payload.state.thermostatSetPoint}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#0000ff",
+            "#0080ff",
+            "#c60000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1270,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "a1aa0b20cb35e49c",
+        "type": "ui_gauge",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "group": "a627428919155efa",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Intensidad Lámpara",
+        "label": "%",
+        "format": "{{msg.payload.state.brightness}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#737300",
+            "#dfdf00",
+            "#ffff00"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1300,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "141a24604a8b8e17",
+        "type": "ui_led",
+        "z": "356bd59b2af96803",
+        "order": 2,
+        "group": "a627428919155efa",
+        "width": "6",
+        "height": "1",
+        "label": "Lámpara",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#626200",
+                "value": "0",
+                "valueType": "num"
+            },
+            {
+                "color": "#959500",
+                "value": "25",
+                "valueType": "num"
+            },
+            {
+                "color": "#cccc00",
+                "value": "50",
+                "valueType": "num"
+            },
+            {
+                "color": "#f0f000",
+                "value": "75",
+                "valueType": "num"
+            },
+            {
+                "color": "#ffff00",
+                "value": "100",
+                "valueType": "num"
+            }
+        ],
+        "allowColorForValueInMessage": true,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "Lámpara",
+        "x": 1560,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "6b689b2c7be42131",
+        "type": "ui_widget_thermometer",
+        "z": "356bd59b2af96803",
+        "group": "10d8358cacd56dec",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Sensor de temperatura",
+        "title": "Sensor de temperatura",
+        "numColor": 3,
+        "colorTop": "#2196f3",
+        "colorMiddle": "#8bc34a",
+        "colorBottom": "#f44336",
+        "unit": "°C",
+        "scale": "normal",
+        "minTemp": 0,
+        "maxTemp": "50",
+        "minTempMoreThanMaxTemp": "1",
+        "numberOfDecimals": "0",
+        "showPercentage": "0",
+        "x": 1600,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "0ddf83a021346127",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "convertir a payload",
+        "func": "msg.payload.temp = msg.payload.state.temperature;\nmsg.payload.date = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 820,
+        "wires": [
+            [
+                "6b689b2c7be42131",
+                "90c1390c5da55e0f"
+            ]
+        ]
+    },
+    {
+        "id": "bb09b1ca65b15d08",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "porcentaje",
+        "func": "if (msg.payload.state.brightness <= 20)\n{\n    msg.payload = 0;\n} else if (msg.payload.state.brightness <= 40) \n{\n    msg.payload = 25;\n} else if (msg.payload.state.brightness <= 65) \n{\n    msg.payload = 50;\n} else if (msg.payload.state.brightness <= 90) \n{\n    msg.payload = 75;\n} else\n{\n    msg.payload = 100;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1270,
+        "y": 1020,
+        "wires": [
+            [
+                "141a24604a8b8e17"
+            ]
+        ]
+    },
+    {
+        "id": "14c04fc4a815ce4d",
+        "type": "ui_led",
+        "z": "356bd59b2af96803",
+        "order": 7,
+        "group": "6b3b546d93656e4a",
+        "width": "0",
+        "height": "0",
+        "label": "Estado Altavoz",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#008000",
+                "value": "ON",
+                "valueType": "str"
+            },
+            {
+                "color": "#ff0000",
+                "value": "OFF",
+                "valueType": "str"
+            }
+        ],
+        "allowColorForValueInMessage": true,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "Estado Altavoz",
+        "x": 1530,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "0c67121f655f6e11",
+        "type": "ui_slider",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "label": "Intensidad (%)",
+        "tooltip": "",
+        "group": "a627428919155efa",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 740,
+        "y": 980,
+        "wires": [
+            [
+                "284cca5275f7b069"
+            ]
+        ]
+    },
+    {
+        "id": "d6a5d4063ae725f0",
+        "type": "ui_numeric",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "label": "Termostato",
+        "tooltip": "",
+        "group": "d015aa69f1b0dcff",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "45",
+        "step": 1,
+        "className": "",
+        "x": 750,
+        "y": 1260,
+        "wires": [
+            [
+                "b582daa76e9b088c"
+            ]
+        ]
+    },
+    {
+        "id": "098e405315a992e8",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza power en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"power\": msg.payload } }, \"acknowledge\" : true };\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 260,
+        "wires": [
+            [
+                "2eacf7a5e422eb0b",
+                "cc7c3e0878577d80",
+                "05fcd1c6faff2a7f",
+                "519d9b497a50f437",
+                "4c9c96452a32dcc9"
+            ]
+        ]
+    },
+    {
+        "id": "5cb967ab591c97c1",
+        "type": "http in",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "url": "/power",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 320,
+        "wires": [
+            [
+                "7aba7b18d58192ee",
+                "b87cd74479c68214",
+                "ed5390f385e5a618"
+            ]
+        ]
+    },
+    {
+        "id": "7aba7b18d58192ee",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Estado Altavoz",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "ed5390f385e5a618",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Apagar o Encender Cubo",
+        "func": "msg.payload = msg.payload.power;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 260,
+        "wires": [
+            [
+                "098e405315a992e8"
+            ]
+        ]
+    },
+    {
+        "id": "7faa38fc9b2a91b5",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 490,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "772d766502ec673e",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "mensaje bienvenida",
+        "func": "if(msg.payload.content.substring(0,1)!=\"/\")\n{\n    msg.payload.content =\"Hola! Soy el bot del Grupo 7 de Informática Industrial. Puedo responderte a estos comandos:\\n/start\\n/Alexa\\n\\nPara mirar un sólo dispositivo de la aplicación pulsa:\\n/Lampara\\n/Termostato\\n/Temperatura\\n/Cortina\\n/Cerradura\\n/Altavoz\";\n return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 1360,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "7cf70a62bc0d6357",
+        "type": "telegram receiver",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "bot": "a7b36fc8427261eb",
+        "saveDataDir": "",
+        "filterCommands": true,
+        "x": 130,
+        "y": 1320,
+        "wires": [
+            [
+                "7faa38fc9b2a91b5",
+                "772d766502ec673e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "bd151d29777ab2ed",
+        "type": "telegram sender",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "bot": "a7b36fc8427261eb",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 3910,
+        "y": 1400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bf6c0b8643eaf241",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/start",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 1380,
+        "wires": [
+            [
+                "772d766502ec673e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "90c1390c5da55e0f",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Temperatura",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1630,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "d2ba585545897f62",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Alexa",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 1840,
+        "wires": [
+            [
+                "e6bf9d3cfb57191c"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "e0cd374d61968c7f",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lampara",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1620,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "0e059b86cd483ecb",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Termostato",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1630,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "b150eaf27e694668",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Termostato Command",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "19bc22ef0f08c4d8",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Power",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1600,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "b87cd74479c68214",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "respuesta",
+        "func": "var parametros = msg.req.query;\n\nif (msg.payload.hasOwnProperty(\"power\")) {\n    msg.payload.date = new Date();\n    msg.statusCode = 201;\n    return [msg, msg];\n}\nelse {\n    msg.statusCode = 400; // error\n    return [msg, null];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 380,
+        "wires": [
+            [
+                "d0fe1d98c22960f5"
+            ],
+            [
+                "602a49ad04c842d9"
+            ]
+        ]
+    },
+    {
+        "id": "d0fe1d98c22960f5",
+        "type": "http response",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 630,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "602a49ad04c842d9",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "cc7c3e0878577d80",
+        "type": "ui_text",
+        "z": "356bd59b2af96803",
+        "group": "6b3b546d93656e4a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Power Altavoz",
+        "format": "{{msg.payload.state.power}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1270,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "05fcd1c6faff2a7f",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "519d9b497a50f437",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "conv",
+        "func": "msg.payload.power=msg.payload.state.power;\nmsg.payload.date=new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1240,
+        "y": 180,
+        "wires": [
+            [
+                "19bc22ef0f08c4d8",
+                "e101a7a005b5cf77"
+            ]
+        ]
+    },
+    {
+        "id": "64c9a31a3be12394",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "convertir a payload",
+        "func": "msg.payload.thermo = msg.payload.state.thermostatSetPoint;\nmsg.payload.date = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 1260,
+        "wires": [
+            [
+                "0e059b86cd483ecb"
+            ]
+        ]
+    },
+    {
+        "id": "b068c2521f43cf15",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "convertir a payload",
+        "func": "msg.payload.lamp = msg.payload.state.brightness;\nmsg.payload.date = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 1060,
+        "wires": [
+            [
+                "e0cd374d61968c7f"
+            ]
+        ]
+    },
+    {
+        "id": "e101a7a005b5cf77",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "debug 32",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1550,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "0178299c0e4f7704",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Power",
+        "operation": "find",
+        "x": 3330,
+        "y": 1840,
+        "wires": [
+            [
+                "0739c3e0991298d4"
+            ]
+        ]
+    },
+    {
+        "id": "0ce8fe901ba47353",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 18",
+        "func": "msg.volumen = msg.payload[0].volume;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3110,
+        "y": 1840,
+        "wires": [
+            [
+                "0178299c0e4f7704"
+            ]
+        ]
+    },
+    {
+        "id": "e6bf9d3cfb57191c",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 1840,
+        "wires": [
+            [
+                "fe404d245e5e7a29"
+            ]
+        ]
+    },
+    {
+        "id": "fe404d245e5e7a29",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lampara",
+        "operation": "find",
+        "x": 540,
+        "y": 1840,
+        "wires": [
+            [
+                "db19c989ef6714b1"
+            ]
+        ]
+    },
+    {
+        "id": "db19c989ef6714b1",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 19",
+        "func": "msg.lampara = msg.payload[0].lamp;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 1840,
+        "wires": [
+            [
+                "1bbf3a6142894ca0"
+            ]
+        ]
+    },
+    {
+        "id": "1bbf3a6142894ca0",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Termostato",
+        "operation": "find",
+        "x": 1010,
+        "y": 1840,
+        "wires": [
+            [
+                "ad2aa7fc7f6ea46c"
+            ]
+        ]
+    },
+    {
+        "id": "ec708de95205e244",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Temperatura",
+        "operation": "find",
+        "x": 1490,
+        "y": 1840,
+        "wires": [
+            [
+                "6c9bfc2983af49f2"
+            ]
+        ]
+    },
+    {
+        "id": "4c9c96452a32dcc9",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "conv",
+        "func": "msg.payload=msg.payload.state.power;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1240,
+        "y": 260,
+        "wires": [
+            [
+                "14c04fc4a815ce4d"
+            ]
+        ]
+    },
+    {
+        "id": "2c6f088dfc25fd1c",
+        "type": "mqtt out",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "topic": "II7/ESP833252/Termostato",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "733738945a4a76bc",
+        "x": 1320,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "4209510ba7129640",
+        "type": "http in",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "url": "/brillo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 1040,
+        "wires": [
+            [
+                "43a49cbba8251012"
+            ]
+        ]
+    },
+    {
+        "id": "254b269b2940fe85",
+        "type": "http response",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 1010,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "43a49cbba8251012",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 1040,
+        "wires": [
+            [
+                "3c73a9cada191729"
+            ]
+        ]
+    },
+    {
+        "id": "3c73a9cada191729",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lampara",
+        "operation": "find",
+        "x": 580,
+        "y": 1040,
+        "wires": [
+            [
+                "d6f235608c517839"
+            ]
+        ]
+    },
+    {
+        "id": "d6f235608c517839",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "mandamos brillo",
+        "func": "msg.payload = { \"brillo\": msg.payload[0].lamp };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 1040,
+        "wires": [
+            [
+                "254b269b2940fe85"
+            ]
+        ]
+    },
+    {
+        "id": "502b2a29d2bbe350",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae Cortina",
+        "func": "var Cortina = msg.payload.Cortina;\nmsg.payload = Cortina;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 660,
+        "wires": [
+            [
+                "5a2f2e4211335fa1"
+            ]
+        ]
+    },
+    {
+        "id": "5a2f2e4211335fa1",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza Cortina en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"rangeValue\": msg.payload } }, \"acknowledge\" : true };\n\n// Hará falta: \"command\": \"AdjustTargetTemperature\"??\n\n//Opción 2\n//return { \"payload\": msg.payload, \"temperatureScale\": \"CELSIUS\", \"acknowledge\": true };",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 660,
+        "wires": [
+            [
+                "c2e970bfdd23eb39",
+                "9cace9fb42a56cea"
+            ]
+        ]
+    },
+    {
+        "id": "c2e970bfdd23eb39",
+        "type": "alexa-smart-home-v3-state",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "58404",
+        "name": "Cortina",
+        "x": 1260,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "d67dbd71c8243b18",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Cortina",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1610,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "9cace9fb42a56cea",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "convertir a payload",
+        "func": "msg.payload.Cortina = msg.payload.state.rangeValue;\nmsg.payload.date = new Date();\n\n// Devuelve solo msg.payload.Cortina y msg.payload.date\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 620,
+        "wires": [
+            [
+                "d67dbd71c8243b18",
+                "6078397e9c5f217b"
+            ]
+        ]
+    },
+    {
+        "id": "0739c3e0991298d4",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "var estado;\n\nif (msg.payload[0].power == \"ON\") {\n    estado = \"encendido\";\n} else {\n    estado = \"apagado\";\n}\n\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"El termostato está a \" + msg.termostato + \"ºC, la temperatura es de \" + msg.temp + \"ºC, la intensidad de brillo de la lámpara es \" + msg.lampara + \"%, la cortina está \" + msg.cortina + \", la puerta principal está \" + msg.cerradura + \" y el altavoz está \"+ estado + \", con un volumen de \" + msg.volumen + \" sobre 100.\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 3550,
+        "y": 1840,
+        "wires": [
+            [
+                "52f0a77705bd7452",
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "52f0a77705bd7452",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Telegram Alexa",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 3760,
+        "y": 1840,
+        "wires": []
+    },
+    {
+        "id": "ad2aa7fc7f6ea46c",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 20",
+        "func": "msg.termostato=msg.payload[0].thermo;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 1840,
+        "wires": [
+            [
+                "ec708de95205e244"
+            ]
+        ]
+    },
+    {
+        "id": "eaac260715807cd0",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Cortina",
+        "operation": "find",
+        "x": 1930,
+        "y": 1840,
+        "wires": [
+            [
+                "f81f0b846d372bb9"
+            ]
+        ]
+    },
+    {
+        "id": "6c9bfc2983af49f2",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 21",
+        "func": "msg.temp = msg.payload[0].temp;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1710,
+        "y": 1840,
+        "wires": [
+            [
+                "eaac260715807cd0"
+            ]
+        ]
+    },
+    {
+        "id": "5e46eda34b51c964",
+        "type": "alexa-smart-home-v3",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "58404",
+        "acknowledge": false,
+        "name": "Cortina",
+        "topic": "",
+        "x": 90,
+        "y": 660,
+        "wires": [
+            [
+                "502b2a29d2bbe350"
+            ]
+        ]
+    },
+    {
+        "id": "bbae2dd58d338781",
+        "type": "ui_switch",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "label": "Abrir/Cerrar",
+        "tooltip": "",
+        "group": "3d278a243ba4b144",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 770,
+        "y": 620,
+        "wires": [
+            [
+                "5a2f2e4211335fa1"
+            ]
+        ]
+    },
+    {
+        "id": "6078397e9c5f217b",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "debug 34",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1560,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "b582daa76e9b088c",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza termostato en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"thermostatSetPoint\": msg.payload } }, \"acknowledge\": true };\n\n//Opción 2\n//return { \"payload\": msg.payload, \"temperatureScale\": \"CELSIUS\", \"acknowledge\": true };",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 1200,
+        "wires": [
+            [
+                "2c6f088dfc25fd1c",
+                "6cbb36ea5755ffde",
+                "8bd9f1ebb1a78cfe",
+                "64c9a31a3be12394",
+                "b150eaf27e694668"
+            ]
+        ]
+    },
+    {
+        "id": "8f4be9c4cf53af3b",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae brillo Alexa",
+        "func": "var brillo = msg.payload;\nmsg.payload = Number(brillo);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 880,
+        "wires": [
+            [
+                "284cca5275f7b069"
+            ]
+        ]
+    },
+    {
+        "id": "49d911dd08498b66",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Apagar o Encender Cubo Alexa",
+        "func": "if (msg.command==\"TurnOn\"){\n    msg.payload=\"ON\";\n} else if (msg.command==\"TurnOff\"){\n    msg.payload=\"OFF\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 200,
+        "wires": [
+            [
+                "098e405315a992e8"
+            ]
+        ]
+    },
+    {
+        "id": "383eb8d868c2dabc",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae lock",
+        "func": "var lock = msg.payload.Lock;\nmsg.payload= lock;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 560,
+        "wires": [
+            [
+                "e507dfcf483c0062"
+            ]
+        ]
+    },
+    {
+        "id": "96a192a56b3951ab",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "extrae volumen",
+        "func": "var vol = msg.payload.Volumen;\nif (vol>=0){\n    msg.payload = Number(vol);\n} else {\n    msg.payload=30;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 440,
+        "wires": [
+            [
+                "a6b9e14ceb22387e"
+            ]
+        ]
+    },
+    {
+        "id": "e507dfcf483c0062",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza cerradura en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"lock\": msg.payload } }, \"acknowledge\" : true };\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 560,
+        "wires": [
+            [
+                "d721874402322b6f",
+                "9e367b2aed962fc8",
+                "319d27d28c3ccacf"
+            ]
+        ]
+    },
+    {
+        "id": "a6b9e14ceb22387e",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "actualiza volumen en Alexa",
+        "func": "return { \"payload\": { \"state\": { \"volume\": msg.payload } }, \"acknowledge\" : true };\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 440,
+        "wires": [
+            [
+                "2eacf7a5e422eb0b",
+                "13158c69bd4c1a5e",
+                "feae923b5cb78080",
+                "52f3b96332b987d6"
+            ]
+        ]
+    },
+    {
+        "id": "f816930718e4bf60",
+        "type": "alexa-smart-home-v3",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "58590",
+        "acknowledge": false,
+        "name": "Cerradura",
+        "topic": "",
+        "x": 100,
+        "y": 560,
+        "wires": [
+            [
+                "383eb8d868c2dabc"
+            ]
+        ]
+    },
+    {
+        "id": "d721874402322b6f",
+        "type": "alexa-smart-home-v3-state",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "58590",
+        "name": "Cerradura",
+        "x": 1260,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "319d27d28c3ccacf",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "convertir a payload",
+        "func": "msg.payload.Lock = msg.payload.state.lock;\nmsg.payload.date = new Date();\n\n// Devuelve solo msg.payload.Cortina y msg.payload.date\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 480,
+        "wires": [
+            [
+                "72ff12d2e33b052c",
+                "8559614272f73e2c"
+            ]
+        ]
+    },
+    {
+        "id": "fb55cf4acd45b69d",
+        "type": "alexa-smart-home-v3",
+        "z": "356bd59b2af96803",
+        "conf": "6237abf040ac4b03",
+        "device": "58031",
+        "acknowledge": false,
+        "name": "Altavoz",
+        "topic": "",
+        "x": 90,
+        "y": 440,
+        "wires": [
+            [
+                "a630918cc3300c20",
+                "1f8f3cf0a41b20a4"
+            ]
+        ]
+    },
+    {
+        "id": "9e367b2aed962fc8",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Cerradura Command",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "13158c69bd4c1a5e",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "Volumen Command",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1290,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "2821d5c7cca84e65",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Volume",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1620,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "feae923b5cb78080",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "conv",
+        "func": "msg.payload.volume=msg.payload.state.volume;\nmsg.payload.date=new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 400,
+        "wires": [
+            [
+                "2821d5c7cca84e65",
+                "329de3e105296a60"
+            ]
+        ]
+    },
+    {
+        "id": "329de3e105296a60",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "debug 35",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1560,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "52f3b96332b987d6",
+        "type": "ui_text",
+        "z": "356bd59b2af96803",
+        "group": "6b3b546d93656e4a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Volumen Altavoz",
+        "format": "{{msg.payload.state.volume}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1290,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "8559614272f73e2c",
+        "type": "mongodb out",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lock",
+        "payonly": true,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1610,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "72ff12d2e33b052c",
+        "type": "debug",
+        "z": "356bd59b2af96803",
+        "name": "debug 36",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1560,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "a630918cc3300c20",
+        "type": "switch",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "property": "command",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "TurnOn",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "TurnOff",
+                "vt": "str"
+            },
+            {
+                "t": "gte",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 230,
+        "y": 440,
+        "wires": [
+            [
+                "49d911dd08498b66"
+            ],
+            [
+                "49d911dd08498b66"
+            ],
+            [
+                "96a192a56b3951ab"
+            ]
+        ]
+    },
+    {
+        "id": "f81f0b846d372bb9",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 22",
+        "func": "var cortina = msg.payload[0].Cortina;\n\nif (cortina == 0) {\n    msg.cortina = \"totalmente bajada\";\n} else if (cortina == 20) {\n    msg.cortina = \"al 20% subida\";\n} else if (cortina == 40) {\n    msg.cortina = \"al 40% subida\";\n} else if (cortina == 60) {\n    msg.cortina = \"al 60% subida\";\n} else if (cortina == 80) {\n    msg.cortina = \"al 80% subida\";\n} else if (cortina == 100) {\n    msg.cortina = \"totalmente subida\";\n}\n\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2150,
+        "y": 1840,
+        "wires": [
+            [
+                "6c509bdf85e4217f"
+            ]
+        ]
+    },
+    {
+        "id": "6c509bdf85e4217f",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lock",
+        "operation": "find",
+        "x": 2390,
+        "y": 1840,
+        "wires": [
+            [
+                "049b58e0f5b985a7"
+            ]
+        ]
+    },
+    {
+        "id": "049b58e0f5b985a7",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 23",
+        "func": "var lock = msg.payload[0].Lock;\n\nif (lock == \"UNLOCKED\") {\n    msg.cerradura = \"abierta\";\n} else if (lock == \"LOCKED\") {\n    msg.cerradura = \"cerrada\";\n}\n\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2630,
+        "y": 1840,
+        "wires": [
+            [
+                "8995508a9bc4cc04"
+            ]
+        ]
+    },
+    {
+        "id": "8995508a9bc4cc04",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Volume",
+        "operation": "find",
+        "x": 2880,
+        "y": 1840,
+        "wires": [
+            [
+                "0ce8fe901ba47353"
+            ]
+        ]
+    },
+    {
+        "id": "7962be3ef8b1ebe8",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Lampara",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 100,
+        "y": 1440,
+        "wires": [
+            [
+                "23656abf6260cb30"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "23656abf6260cb30",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1440,
+        "wires": [
+            [
+                "8ef720a06abb5382"
+            ]
+        ]
+    },
+    {
+        "id": "8ef720a06abb5382",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lampara",
+        "operation": "find",
+        "x": 540,
+        "y": 1440,
+        "wires": [
+            [
+                "cec3b02d071c04a7"
+            ]
+        ]
+    },
+    {
+        "id": "cec3b02d071c04a7",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "msg.lampara = msg.payload[0].lamp;\n\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"La intensidad de brillo de la lámpara es \" + msg.lampara + \".\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1440,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "e4f6d1852da2aaff",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Termostato",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 110,
+        "y": 1500,
+        "wires": [
+            [
+                "652cea4ffd063675"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "652cea4ffd063675",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1500,
+        "wires": [
+            [
+                "c632946fc8a7c676"
+            ]
+        ]
+    },
+    {
+        "id": "58cbd8f8ced65ca2",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "msg.termostato = msg.payload[0].thermo;\n\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"El termostato está a \" + msg.termostato +\".\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1500,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "c632946fc8a7c676",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Termostato",
+        "operation": "find",
+        "x": 550,
+        "y": 1500,
+        "wires": [
+            [
+                "58cbd8f8ced65ca2"
+            ]
+        ]
+    },
+    {
+        "id": "b82c0d01199a5c1c",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Temperatura",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 110,
+        "y": 1560,
+        "wires": [
+            [
+                "9a16c185eebdec37"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "9a16c185eebdec37",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1560,
+        "wires": [
+            [
+                "b1c9980f9dd5a33b"
+            ]
+        ]
+    },
+    {
+        "id": "1b6151527728f9d2",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "msg.temp = msg.payload[0].temp;\n\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"La temperatura actual es de: \" + msg.termostato +\" ºC.\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1560,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "b1c9980f9dd5a33b",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Temperatura",
+        "operation": "find",
+        "x": 550,
+        "y": 1560,
+        "wires": [
+            [
+                "1b6151527728f9d2"
+            ]
+        ]
+    },
+    {
+        "id": "d10624e3bdeaa855",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Cerradura",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 100,
+        "y": 1640,
+        "wires": [
+            [
+                "ba8ef21d9160eef7"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "db30db8da612a97d",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Cortina",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 1700,
+        "wires": [
+            [
+                "a03b87f8ad45791a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8a4b48c21ece804d",
+        "type": "telegram command",
+        "z": "356bd59b2af96803",
+        "name": "",
+        "command": "/Altavoz",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "a7b36fc8427261eb",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 90,
+        "y": 1760,
+        "wires": [
+            [
+                "733c6ae76ff02c88"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "ba8ef21d9160eef7",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1640,
+        "wires": [
+            [
+                "490d1e8c4fe84a37"
+            ]
+        ]
+    },
+    {
+        "id": "a03b87f8ad45791a",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1700,
+        "wires": [
+            [
+                "06d107d455181692"
+            ]
+        ]
+    },
+    {
+        "id": "733c6ae76ff02c88",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "ultimo registro",
+        "func": "msg.message = msg.payload;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1760,
+        "wires": [
+            [
+                "b8a62f247e6d5c2e"
+            ]
+        ]
+    },
+    {
+        "id": "490d1e8c4fe84a37",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Lock",
+        "operation": "find",
+        "x": 530,
+        "y": 1640,
+        "wires": [
+            [
+                "ef3e53b31346a429"
+            ]
+        ]
+    },
+    {
+        "id": "06d107d455181692",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Cortina",
+        "operation": "find",
+        "x": 530,
+        "y": 1700,
+        "wires": [
+            [
+                "3ff1126c4254c8dd"
+            ]
+        ]
+    },
+    {
+        "id": "01f91860e7044cad",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Power",
+        "operation": "find",
+        "x": 990,
+        "y": 1760,
+        "wires": [
+            [
+                "cee3777947644ad3"
+            ]
+        ]
+    },
+    {
+        "id": "41b2fa1c3dc5abf4",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "function 24",
+        "func": "msg.volumen = msg.payload[0].volume;\nmsg.limit = 1;\nmsg.sort = { \"date\": -1 };\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 1760,
+        "wires": [
+            [
+                "01f91860e7044cad"
+            ]
+        ]
+    },
+    {
+        "id": "cee3777947644ad3",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "var estado;\n\nif (msg.payload[0].power == \"ON\") {\n    estado = \"encendido\";\n} else {\n    estado = \"apagado\";\n}\n\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"El altavoz está \"+ estado + \", con un volumen de \" + msg.volumen + \" sobre 100.\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 1760,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "b8a62f247e6d5c2e",
+        "type": "mongodb in",
+        "z": "356bd59b2af96803",
+        "mongodb": "43bb8dbd8cf8d231",
+        "name": "",
+        "collection": "Volume",
+        "operation": "find",
+        "x": 540,
+        "y": 1760,
+        "wires": [
+            [
+                "41b2fa1c3dc5abf4"
+            ]
+        ]
+    },
+    {
+        "id": "ef3e53b31346a429",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "var lock = msg.payload[0].Lock;\n\nif (lock == \"UNLOCKED\") {\n    msg.cerradura = \"abierta\";\n} else if (lock == \"LOCKED\") {\n    msg.cerradura = \"cerrada\";\n}\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"La puerta de casa está \" + msg.cerradura +\".\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1640,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "3ff1126c4254c8dd",
+        "type": "function",
+        "z": "356bd59b2af96803",
+        "name": "Datos Alexa",
+        "func": "var cortina = msg.payload[0].Cortina;\n\nif (cortina == 0) {\n    msg.cortina = \"totalmente bajada\";\n} else if (cortina == 20) {\n    msg.cortina = \"al 20% subida\";\n} else if (cortina == 40) {\n    msg.cortina = \"al 40% subida\";\n} else if (cortina == 60) {\n    msg.cortina = \"al 60% subida\";\n} else if (cortina == 80) {\n    msg.cortina = \"al 80% subida\";\n} else if (cortina == 100) {\n    msg.cortina = \"totalmente subida\";\n}\n\nmsg.payload = msg.message;\n//msg.payload.chatId = 6440492345;\n//msg.payload.type = \"message\";\nmsg.payload.content = \"La cortina está \" + msg.cortina +\".\\n\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1700,
+        "wires": [
+            [
+                "bd151d29777ab2ed"
+            ]
+        ]
+    },
+    {
+        "id": "ccff440327edbd89",
+        "type": "ui_spacer",
+        "z": "356bd59b2af96803",
+        "name": "spacer",
+        "group": "a627428919155efa",
+        "order": 5,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "36f88c2e67845c10",
+        "type": "ui_spacer",
+        "z": "356bd59b2af96803",
+        "name": "spacer",
+        "group": "a627428919155efa",
+        "order": 6,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "de4c47d248aaaffc",
+        "type": "ui_spacer",
+        "z": "356bd59b2af96803",
+        "name": "spacer",
+        "group": "a627428919155efa",
+        "order": 7,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "b452cd9032236d16",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "iot.ac.uma.es",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "6237abf040ac4b03",
+        "type": "alexa-smart-home-v3-conf",
+        "username": "mariaherresa",
+        "mqttserver": "mq-red.cb-net.co.uk",
+        "webapiurl": "red.cb-net.co.uk",
+        "contextName": "memory"
+    },
+    {
+        "id": "d015aa69f1b0dcff",
+        "type": "ui_group",
+        "name": "Termostato",
+        "tab": "ac0468cc34569300",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a627428919155efa",
+        "type": "ui_group",
+        "name": "Lámpara",
+        "tab": "ac0468cc34569300",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "10d8358cacd56dec",
+        "type": "ui_group",
+        "name": "Temperatura",
+        "tab": "ac0468cc34569300",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6b3b546d93656e4a",
+        "type": "ui_group",
+        "name": "Altavoz",
+        "tab": "ac0468cc34569300",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a7b36fc8427261eb",
+        "type": "telegram bot",
+        "botname": "infind_aqaracube_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "43bb8dbd8cf8d231",
+        "type": "mongodb",
+        "hostname": "iot.ac.uma.es",
+        "topology": "direct",
+        "connectOptions": "",
+        "port": "27017",
+        "db": "II7",
+        "name": ""
+    },
+    {
+        "id": "733738945a4a76bc",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "iot.ac.uma.es",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3d278a243ba4b144",
+        "type": "ui_group",
+        "name": "Cortina",
+        "tab": "ac0468cc34569300",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ac0468cc34569300",
+        "type": "ui_tab",
+        "name": "Proyecto Grupo 7",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
