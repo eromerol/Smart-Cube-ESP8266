@@ -10,6 +10,7 @@ PubSubClient mqtt_client(espClient);
 
 // Motor paso a paso
 int pasosPorVuelta = 2048;
+int porcentajeanterior = 0;
 // ULN2003 Motor Driver Pins
 #define IN1 19
 #define IN2 18
@@ -101,16 +102,25 @@ void procesa_mensaje(char *topic, byte *payload, unsigned int length)
       {
         String estadoCortina = jsonDoc["Cortina"];
         int porcentaje = estadoCortina.toInt();
-
+        // if (pocentaje < porcentajeanterior){
+        //   for (int i = 0; i < porcentaje; i++)
+        // myStepper.step(pasoPorVuelta);
+        // } if else (pocentaje > porcentajeanterior){
+        // myStepper.step(-pasoPorVuelta);
+        // } else 
+      
         if (porcentaje >= 0 && porcentaje <= 100)
         {
           Serial.println("Cortina: " + String(porcentaje) + "%");
 
           // Calcula la cantidad de pasos basándote en un rango de porcentaje
-          int pasos = map(porcentaje, 0, 100, -pasosPorVuelta, pasosPorVuelta);
-
-          // Mueve el motor a la posición correspondiente al porcentaje recibido
-          myStepper.step(pasos);
+          int pasos = map(porcentaje, 0, 100,-pasosPorVuelta, pasosPorVuelta);
+          int tiempo = map(abs(porcentajeanterior-porcentaje),0,100,0,20);
+          porcentajeanterior = porcentaje;
+          // Mueve el motor a la posición correspondiente al porcentaje recibi
+          for (int i = 0; i < tiempo; i++){
+           myStepper.step(pasos);
+          }
         }
         else
         {
@@ -132,7 +142,7 @@ void setup()
   Serial.println("Empieza setup...");
   myStepper.setSpeed(10);
   Serial.println("ID único del ESP32: " + ID_PLACA);
-  topic_Alexa = "II7/ESP833252/Alexa";
+  topic_Alexa = "II7/ESP833252/Cortina";
   mqtt_client.setServer(mqttServer.c_str(), 1883);
   mqtt_client.setBufferSize(512); // para poder enviar mensajes de hasta X bytes
   mqtt_client.setCallback(procesa_mensaje);
