@@ -337,7 +337,7 @@
         "device": "57964",
         "name": "Sensor de Temperatura",
         "x": 1330,
-        "y": 1100,
+        "y": 1060,
         "wires": []
     },
     {
@@ -382,7 +382,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 380,
-        "y": 560,
+        "y": 540,
         "wires": []
     },
     {
@@ -432,7 +432,7 @@
         "finalize": "",
         "libs": [],
         "x": 670,
-        "y": 1200,
+        "y": 1120,
         "wires": [
             [
                 "0f494d4050d46bbb"
@@ -604,7 +604,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1350,
-        "y": 1060,
+        "y": 980,
         "wires": []
     },
     {
@@ -718,7 +718,7 @@
         "width": 0,
         "height": 0,
         "name": "Sensor de temperatura",
-        "title": "",
+        "title": "Termómetro",
         "numColor": 3,
         "colorTop": "#2196f3",
         "colorMiddle": "#8bc34a",
@@ -730,6 +730,7 @@
         "minTempMoreThanMaxTemp": "1",
         "numberOfDecimals": "0",
         "showPercentage": "0",
+        "currentTempFontSize": "1.2",
         "x": 1660,
         "y": 1080,
         "wires": []
@@ -824,7 +825,7 @@
         "step": 1,
         "className": "",
         "x": 670,
-        "y": 1240,
+        "y": 1200,
         "wires": [
             [
                 "0f494d4050d46bbb"
@@ -913,8 +914,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 380,
-        "y": 300,
+        "x": 600,
+        "y": 200,
         "wires": []
     },
     {
@@ -1669,12 +1670,12 @@
         "topic": "topic",
         "topicType": "msg",
         "style": "",
-        "onvalue": "ON",
-        "onvalueType": "str",
+        "onvalue": "100",
+        "onvalueType": "num",
         "onicon": "",
         "oncolor": "",
-        "offvalue": "OFF",
-        "offvalueType": "str",
+        "offvalue": "0",
+        "offvalueType": "num",
         "officon": "",
         "offcolor": "",
         "animate": false,
@@ -1942,8 +1943,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1310,
-        "y": 600,
+        "x": 1330,
+        "y": 480,
         "wires": []
     },
     {
