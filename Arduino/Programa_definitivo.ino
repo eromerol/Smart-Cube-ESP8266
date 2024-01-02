@@ -16,12 +16,14 @@
 #define MPU 0x68
 
 /////////////////////////////////////////////////////////////////
+
 Button2 button;
 MPU6050 mpu;
 
 // Inicializamos el cliente WiFi
 WiFiClient espClient;
 PubSubClient mqtt_client(espClient);
+
 /////////////////////////////////////////////////////////////////
 // Inicializamos el cliente HTTPS
 
@@ -51,30 +53,22 @@ int Vibration_signal = 14;
 // Declaramos variables
 int brillo = 0;
 int lamp = 0;
-String cerradura="LOCKED";
+String cerradura = "LOCKED";
 float temperatura;
-int Cortina_prev=40;
+int Cortina_prev = 40;
 int Cortina;
 int termostato;
 int termostato_prev = 25;
 int volumen;
-int volumen_prev=30;
-int contador=1;
-bool subir=true;
+int volumen_prev = 30;
+int contador = 1;
+bool subir = true;
 int codigoStatus;
-String respuesta="";
+String respuesta = "";
 
 // Definimos datos de la red WiFi
-//const String ssid = "dlink-AE58";
-//const String password = "ceyza33866";
-// const String ssid = "infind";
-// const String password = "1518wifi";
-// const String ssid = "María's Galaxy A13";
-// const String password = "mariaguapa";
-//const String ssid = "HUAWEI";
-//const String password = "Internet";
-const String ssid = "vodafoneF4C0_plus";
-const String password = "68GWSDHUQ7UJVL";
+const String ssid = "infind";
+const String password = "1518wifi";
 
 // Definimos el servidor MQTT
 const String mqttServer = "iot.ac.uma.es";
@@ -212,9 +206,7 @@ void setup(void) {
   ID_PLACA = "ESP" + String(ESP.getChipId()); //Obtenemos el chipID
 
   // Creamos los topics
-  //topic_conexion="II7/"+ ID_PLACA +"/conexion"; //Publicar
   topic_Alexa="II7/"+ ID_PLACA +"/Alexa"; //Publicar
-  //topic_Alexa="II7/48620a6de378/Alexa";
 
   // Nos conectamos al WiFi
   conecta_wifi();
@@ -227,7 +219,7 @@ void setup(void) {
   #ifdef __HTTPS__
   ClienteWiFi.setFingerprint(fingerprint); // se comprobará el certificado del servidor
   //sslClienteWiFi.setInsecure(); // si no se quiere comprobar el certificado del servidor
-#endif
+  #endif
     
   if (mpu.testConnection()) Serial.println("Sensor iniciado correctamente");
   else Serial.println("Error al iniciar el sensor");
@@ -348,10 +340,6 @@ void loop2(){
   mpu.getAcceleration(&ax, &ay, &az);
   mpu.getRotation(&gx, &gy, &gz);
 
-  // Registramos la temperatura y la convertimos a grados celsius
-  temp_raw = mpu.getTemperature(); // Temperatura en formato int_16 y en complemento a 2
-  temperatura = (temp_raw + 521)/340 + 35.0;
-
   // Conversion a sistema internacional
   float ax_m_s2 = ax * (9.81/16384.0);
   float ay_m_s2 = ay * (9.81/16384.0);
@@ -360,28 +348,10 @@ void loop2(){
   float gy_deg_s = gy * (250.0/32768.0);
   float gz_deg_s = gz * (250.0/32768.0);
 
-  //Mostrar las lecturas separadas por un [tab]
-//   Serial.print("a[x y z](m/s2):\t");
-//   Serial.print(ax_m_s2); Serial.print("\t");
-//   Serial.print(ay_m_s2); Serial.print("\t");
-//   Serial.print(az_m_s2);
-//   Serial.print("\ng[x y z](deg/s):\t");
-//   Serial.print(gx_deg_s); Serial.print("\t");
-//   Serial.print(gy_deg_s); Serial.print("\t");
-//   Serial.println(gz_deg_s);
-
   //Calcular los angulos de inclinacion:
   float accel_ang_x=atan(ax/sqrt(pow(ay,2) + pow(az,2)))*(180.0/3.14);
   float accel_ang_y=atan(ay/sqrt(pow(ax,2) + pow(az,2)))*(180.0/3.14);
   float accel_ang_z=atan(az/sqrt(pow(ax,2) + pow(ay,2)))*(180.0/3.14);
-
-  //Mostrar los angulos separadas por un [tab]
-  // Serial.print("Inclinacion en X: ");
-  // Serial.print(accel_ang_x); 
-  // Serial.print("\nInclinacion en Y: ");
-  // Serial.println(accel_ang_y);
-  // Serial.print("\nInclinacion en Z: ");
-  // Serial.println(accel_ang_z);
 
   // Necesitamos el incremento de tiempo
   dt = millis()-tiempo_prev;
@@ -408,6 +378,10 @@ void loop2(){
   Serial.print(giry);
   Serial.print("\tRotacion en Z: ");
   Serial.print(girz);
+  
+  // Registramos la temperatura y la convertimos a grados celsius
+  temp_raw = mpu.getTemperature(); // Temperatura en formato int_16 y en complemento a 2
+  temperatura = (temp_raw + 521)/340 + 35.0;
 
   // ---------- INTERPRETACION DE LAS LECTURAS ------------
 
