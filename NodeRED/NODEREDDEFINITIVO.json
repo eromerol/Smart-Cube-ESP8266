@@ -914,8 +914,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 600,
-        "y": 200,
+        "x": 380,
+        "y": 280,
         "wires": []
     },
     {
@@ -1542,7 +1542,8 @@
             [
                 "77425545d1fd418c",
                 "89dd4e4022e9d47d",
-                "292fa3fc3802da41"
+                "292fa3fc3802da41",
+                "e720c8ff7c0c122c"
             ]
         ]
     },
@@ -1659,9 +1660,9 @@
         "type": "ui_switch",
         "z": "f3bc66390a1a772f",
         "name": "",
-        "label": "Abrir/Cerrar",
+        "label": "LOCKED/UNLOCKED",
         "tooltip": "",
-        "group": "e2609cafa2322a8b",
+        "group": "6a66ccc610887e68",
         "order": 1,
         "width": 0,
         "height": 0,
@@ -1670,21 +1671,21 @@
         "topic": "topic",
         "topicType": "msg",
         "style": "",
-        "onvalue": "100",
-        "onvalueType": "num",
+        "onvalue": "LOCKED",
+        "onvalueType": "str",
         "onicon": "",
         "oncolor": "",
-        "offvalue": "0",
-        "offvalueType": "num",
+        "offvalue": "UNLOCKED",
+        "offvalueType": "str",
         "officon": "",
         "offcolor": "",
         "animate": false,
         "className": "",
-        "x": 670,
-        "y": 780,
+        "x": 700,
+        "y": 600,
         "wires": [
             [
-                "c87bd18c437ff56d"
+                "a4ac4c76cabddffa"
             ]
         ]
     },
@@ -2825,6 +2826,58 @@
             [
                 "10b17589b9d25b7d",
                 "3d52373c0cf1c45e"
+            ]
+        ]
+    },
+    {
+        "id": "e720c8ff7c0c122c",
+        "type": "mqtt out",
+        "z": "f3bc66390a1a772f",
+        "name": "",
+        "topic": "II7/ESP833252/Cortina",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "733738945a4a76bc",
+        "x": 1660,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "7ae0c4db843e19cf",
+        "type": "ui_switch",
+        "z": "f3bc66390a1a772f",
+        "name": "",
+        "label": "Abrir/Cerrar",
+        "tooltip": "",
+        "group": "e2609cafa2322a8b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "100",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 670,
+        "y": 780,
+        "wires": [
+            [
+                "c87bd18c437ff56d"
             ]
         ]
     }
