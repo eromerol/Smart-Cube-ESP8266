@@ -1,6 +1,6 @@
 # Smart-Cube-ESP8266
 
-<img align="right" src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/d0d91358-7f2e-4a00-8792-92a445857e86" weight=250 height=250>
+<img align="right" src="https://github.com/eromerol/Smart-Cube-ESP8266/assets/145780382/e8e6ce38-860f-4390-ae92-3b58cca1ee03" weight=250 height=250>
 
 DIY version of the **Aqara Magic Cube** with ESP8266.
 
